@@ -28,7 +28,7 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
     const [a11yMessage, setA11yMessage] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-    const allowedTypes = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp", "image/svg+xml", "image/heic", "image/heif"];
     const [isDragging, setIsDragging] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
     const [downloadPulse, setDownloadPulse] = useState(false);
@@ -98,8 +98,9 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
 
     function readFile(file: File) {
         // validate file type and size
-        if (!allowedTypes.includes(file.type)) {
-            const msg = "Unsupported file type. Please use PNG, JPG, WEBP, or SVG.";
+        const nameIsHeic = /\.(heic|heif)$/i.test(file.name || '');
+        if (!allowedTypes.includes(file.type) && !nameIsHeic) {
+            const msg = "Unsupported file type. Please use PNG, JPG, WEBP, SVG, or HEIC.";
             setErrorMessage(msg);
             setA11yMessage(msg);
             return;
@@ -179,42 +180,35 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
                 return;
             }
         }
-
-        // Handle PDF -> Image (render first page) using pdfjs-dist in main thread
-        if (lastFile?.type === 'application/pdf' || imageConverter.slug === 'pdf-to-image') {
+        // Special handling for HEIC/HEIF: try heic2any first (optional dependency)
+        if (lastFile && (lastFile.type.includes('heic') || lastFile.type.includes('heif'))) {
             try {
-                const pdfjs = await import('pdfjs-dist/legacy/build/pdf');
-                // create blob url
-                const ab = await (lastFile ? lastFile.arrayBuffer() : (await fetch(srcDataUrl)).arrayBuffer());
-                const blob = new Blob([ab], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const loadingTask = pdfjs.getDocument(url);
-                const pdf = await loadingTask.promise;
-                const page = await pdf.getPage(1);
-                const viewport = page.getViewport({ scale: 2 });
-                const canvas = canvasRef.current!;
-                canvas.width = Math.round(viewport.width);
-                canvas.height = Math.round(viewport.height);
-                const ctx = canvas.getContext('2d');
-                if (!ctx) throw new Error('Canvas context unavailable');
-                const renderContext = {
-                    canvasContext: ctx,
-                    viewport,
+                const arrayBuf = await lastFile.arrayBuffer();
+                const heicModule = await import('heic2any').catch(() => null);
+                const heic2any = heicModule?.default ?? heicModule;
+                if (!heic2any) throw new Error('heic2any not available');
+
+                const blob = new Blob([arrayBuf], { type: lastFile.type });
+                const to = imageConverter.to.toLowerCase();
+                const toType = to === 'png' ? 'image/png' : to === 'webp' ? 'image/webp' : 'image/jpeg';
+                const outBlob = await heic2any({ blob, toType });
+                const reader = new FileReader();
+                reader.onload = () => {
+                    setOutDataUrl(String(reader.result));
+                    setIsConverting(false);
+                    setA11yMessage('Conversion complete.');
+                    setConversionProgress(100);
+                    setTimeout(() => setConversionProgress(0), 700);
                 };
-                await page.render(renderContext).promise;
-                const dataUrl = canvas.toDataURL('image/png');
-                setOutDataUrl(dataUrl);
-                setIsConverting(false);
-                setA11yMessage('Conversion complete.');
-                setConversionProgress(100);
-                setTimeout(() => setConversionProgress(0), 700);
-                URL.revokeObjectURL(url);
+                reader.readAsDataURL(outBlob);
                 return;
             } catch (err) {
                 setIsConverting(false);
-                setErrorMessage('PDF→Image requires `pdfjs-dist`. Please run `npm install` and try again.');
-                setA11yMessage('PDF→Image conversion failed.');
-                console.error(err);
+                setConversionProgress(0);
+                const msg = 'HEIC decoding requires optional `heic2any` or a browser with HEIC support. Install `npm i heic2any` or use a compatible browser.';
+                setErrorMessage(msg);
+                setA11yMessage(msg);
+                console.warn('HEIC conversion failed (heic2any missing or unsupported):', err);
                 return;
             }
         }
@@ -423,7 +417,14 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
                         onDragEnter={onDragEnter}
                         onDragLeave={onDragLeave}
                     >
-                        <input ref={inputRef} className="hidden" type="file" accept="image/*" onChange={handleFileInput} aria-hidden />
+                        <input
+                            ref={inputRef}
+                            className="hidden"
+                            type="file"
+                            accept={mode === 'image' && imageConverter?.slug === 'heic-to-png' ? 'image/heic,image/heif' : 'image/*'}
+                            onChange={handleFileInput}
+                            aria-hidden
+                        />
                         <div className="text-center relative">
                             <svg className="mx-auto h-8 w-8 text-zinc-400" viewBox="0 0 24 24" fill="none" aria-hidden>
                                 <path d="M12 3v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

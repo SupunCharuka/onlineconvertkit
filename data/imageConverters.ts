@@ -109,6 +109,26 @@ export const imageConverters: ImageConverter[] = [
     keywords: ["svg to png", "convert svg to png", "rasterize svg"],
     related: ["png-to-svg", "jpg-to-png"],
   },
+  {
+    slug: "heic-to-png",
+    name: "HEIC to PNG Converter",
+    from: "HEIC",
+    to: "PNG",
+    description:
+      "Convert HEIC/HEIF photos to PNG in the browser. Requires optional `heic2any` or native browser HEIC support.",
+    keywords: ["heic to png", "convert heic", "heif converter"],
+    related: ["jpg-to-png", "png-to-jpg"],
+  },
+  {
+    slug: "image-to-heic",
+    name: "Image to HEIC Converter",
+    from: "Image",
+    to: "HEIC",
+    description:
+      "Convert images to HEIC. Note: browser-side HEIC encoding is not widely supported; this option may require server-side tooling.",
+    keywords: ["image to heic", "jpg to heic", "png to heic"],
+    related: ["image-to-pdf", "png-to-webp"],
+  },
 ];
 
 export const imageConverterBySlug: Record<string, ImageConverter> = imageConverters.reduce(
