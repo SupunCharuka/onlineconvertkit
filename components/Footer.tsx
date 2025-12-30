@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
     return (
-        <footer className="mt-12 bg-gradient-to-t from-white/60 to-transparent dark:from-black/40 border-t border-zinc-100 dark:border-zinc-800">
+        <footer className="bg-gradient-to-t from-white/60 to-transparent dark:from-black/40 border-t border-zinc-100 dark:border-zinc-800">
             <div className="max-w-5xl mx-auto px-4 py-8 text-sm text-zinc-600 dark:text-zinc-400 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-md bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-sm"> 

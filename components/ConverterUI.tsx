@@ -28,7 +28,7 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
     const [a11yMessage, setA11yMessage] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
     const [isDragging, setIsDragging] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
     const [downloadPulse, setDownloadPulse] = useState(false);
@@ -99,7 +99,7 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
     function readFile(file: File) {
         // validate file type and size
         if (!allowedTypes.includes(file.type)) {
-            const msg = "Unsupported file type. Please use PNG, JPG, or WEBP.";
+            const msg = "Unsupported file type. Please use PNG, JPG, WEBP, or SVG.";
             setErrorMessage(msg);
             setA11yMessage(msg);
             return;
@@ -175,9 +175,16 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
                         };
                         reader.readAsDataURL(outBlob);
                     } else if (d.type === 'error') {
+                        // If worker couldn't decode (common for SVG), try main-thread fallback
+                        const msg = String(d.message || 'Worker error');
+                        if (lastFile?.type === 'image/svg+xml') {
+                            setA11yMessage('Worker cannot decode SVG, falling back to main-thread conversion.');
+                            performMainThreadConversion();
+                            return;
+                        }
                         setIsConverting(false);
-                        setErrorMessage(String(d.message || 'Worker error'));
-                        setA11yMessage(String(d.message || 'Worker error'));
+                        setErrorMessage(msg);
+                        setA11yMessage(msg);
                         setConversionProgress(0);
                     }
                 };
@@ -188,10 +195,15 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
             } catch (err) {
                 // fall back to main-thread conversion if worker fails
                 console.warn('Worker conversion failed, falling back:', err);
+                await performMainThreadConversion();
             }
         }
+        // If we reach here, fall back to main-thread
+        await performMainThreadConversion();
+    }
 
-        // Fallback: synchronous canvas conversion on main thread
+    async function performMainThreadConversion() {
+        if (!srcDataUrl || !imageConverter) return;
         try {
             if (progressTimerRef.current) {
                 window.clearInterval(progressTimerRef.current);
@@ -208,11 +220,17 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0);
             const toLower = imageConverter.to.toLowerCase();
-            let mime = 'image/jpeg';
-            if (toLower === 'webp') mime = 'image/webp';
-            else if (toLower === 'png') mime = 'image/png';
-            const dataUrl = canvas.toDataURL(mime, quality);
-            setOutDataUrl(dataUrl);
+            if (toLower === 'svg') {
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${img.naturalWidth}" height="${img.naturalHeight}"><image href="${srcDataUrl}" width="${img.naturalWidth}" height="${img.naturalHeight}" preserveAspectRatio="none" /></svg>`;
+                const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+                setOutDataUrl(svgDataUrl);
+            } else {
+                let mime = 'image/jpeg';
+                if (toLower === 'webp') mime = 'image/webp';
+                else if (toLower === 'png') mime = 'image/png';
+                const dataUrl = canvas.toDataURL(mime, quality);
+                setOutDataUrl(dataUrl);
+            }
             setIsConverting(false);
             setA11yMessage('Conversion complete.');
             setConversionProgress(100);

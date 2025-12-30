@@ -40,16 +40,37 @@ self.onmessage = async (e) => {
     ctx.drawImage(bitmap, 0, 0, width, height);
     postMessage({ type: 'progress', progress: 60, message: 'Drawing complete' });
 
-    let mime = 'image/jpeg';
-    if (targetType === 'webp') mime = 'image/webp';
-    else if (targetType === 'png') mime = 'image/png';
-    // convert to blob (encoding step)
-    const outBlob = await off.convertToBlob({ type: mime, quality });
-    postMessage({ type: 'progress', progress: 95, message: 'Encoding' });
+        // Special case: export to SVG by embedding the original bitmap as base64
+        if (targetType === 'svg') {
+          // convert the original fileBuffer to base64 safely in chunks
+          function arrayBufferToBase64(buffer) {
+            const bytes = new Uint8Array(buffer);
+            const chunkSize = 0x8000;
+            let binary = '';
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+              binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+            }
+            return btoa(binary);
+          }
+          const base64 = arrayBufferToBase64(fileBuffer);
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${bitmap.width}" height="${bitmap.height}"><image href="data:${fileType};base64,${base64}" width="${bitmap.width}" height="${bitmap.height}" preserveAspectRatio="none" /></svg>`;
+          const outBlob = new Blob([svg], { type: 'image/svg+xml' });
+          postMessage({ type: 'progress', progress: 95, message: 'Creating SVG' });
+          const buffer = await outBlob.arrayBuffer();
+          postMessage({ type: 'result', buffer, mime: 'image/svg+xml' }, [buffer]);
+          return;
+        }
 
-    const buffer = await outBlob.arrayBuffer();
-    // Transfer the buffer back to main thread for minimal copy
-    postMessage({ type: 'result', buffer, mime }, [buffer]);
+        let mime = 'image/jpeg';
+        if (targetType === 'webp') mime = 'image/webp';
+        else if (targetType === 'png') mime = 'image/png';
+        // convert to blob (encoding step)
+        const outBlob = await off.convertToBlob({ type: mime, quality });
+        postMessage({ type: 'progress', progress: 95, message: 'Encoding' });
+
+        const buffer = await outBlob.arrayBuffer();
+        // Transfer the buffer back to main thread for minimal copy
+        postMessage({ type: 'result', buffer, mime }, [buffer]);
   } catch (err) {
     postMessage({ type: 'error', message: String(err) });
   }

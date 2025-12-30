@@ -69,6 +69,36 @@ export const imageConverters: ImageConverter[] = [
     keywords: ["jpg to png", "convert jpg to png", "jpg png converter"],
     related: ["png-to-jpg", "webp-to-png"],
   },
+  {
+    slug: "png-to-svg",
+    name: "PNG to SVG Converter",
+    from: "PNG",
+    to: "SVG",
+    description:
+      "Export a PNG image wrapped inside an SVG file (embedded raster). This is useful when you need an .svg container but don't require vector tracing.",
+    keywords: ["png to svg", "png svg converter", "embed png in svg"],
+    related: ["png-to-webp", "png-to-jpg"],
+  },
+  {
+    slug: "jpg-to-svg",
+    name: "JPG to SVG Converter",
+    from: "JPG",
+    to: "SVG",
+    description:
+      "Export a JPG image wrapped inside an SVG file (embedded raster). Useful for packaging raster inside an SVG container without vectorization.",
+    keywords: ["jpg to svg", "jpg svg converter", "embed jpg in svg"],
+    related: ["jpg-to-png", "jpg-to-webp"],
+  },
+  {
+    slug: "svg-to-png",
+    name: "SVG to PNG Converter",
+    from: "SVG",
+    to: "PNG",
+    description:
+      "Rasterize an SVG to PNG in the browser. Useful for exporting vector art as a raster image for compatibility or embedding.",
+    keywords: ["svg to png", "convert svg to png", "rasterize svg"],
+    related: ["png-to-svg", "jpg-to-png"],
+  },
 ];
 
 export const imageConverterBySlug: Record<string, ImageConverter> = imageConverters.reduce(
