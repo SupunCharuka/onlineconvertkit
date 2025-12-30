@@ -145,6 +145,80 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
         setIsConverting(true);
         setConversionProgress(4);
 
+        const target = imageConverter.to.toLowerCase();
+
+        // Handle image -> PDF in main thread using pdf-lib
+        if (target === 'pdf') {
+            try {
+                const { PDFDocument } = await import('pdf-lib');
+                const arrayBuffer = await (lastFile ? lastFile.arrayBuffer() : (await fetch(srcDataUrl)).arrayBuffer());
+                const imgType = (lastFile?.type || '').toLowerCase();
+                const pdfDoc = await PDFDocument.create();
+                let img;
+                if (imgType.includes('png')) img = await pdfDoc.embedPng(arrayBuffer);
+                else img = await pdfDoc.embedJpg(arrayBuffer);
+                const page = pdfDoc.addPage([img.width, img.height]);
+                page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+                const pdfBytes = await pdfDoc.save();
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const reader = new FileReader();
+                reader.onload = () => {
+                    setOutDataUrl(String(reader.result));
+                    setIsConverting(false);
+                    setA11yMessage('Conversion complete.');
+                    setConversionProgress(100);
+                    setTimeout(() => setConversionProgress(0), 700);
+                };
+                reader.readAsDataURL(blob);
+                return;
+            } catch (err) {
+                setIsConverting(false);
+                setErrorMessage('Image→PDF requires `pdf-lib`. Please run `npm install` and try again.');
+                setA11yMessage('Image→PDF conversion failed.');
+                console.error(err);
+                return;
+            }
+        }
+
+        // Handle PDF -> Image (render first page) using pdfjs-dist in main thread
+        if (lastFile?.type === 'application/pdf' || imageConverter.slug === 'pdf-to-image') {
+            try {
+                const pdfjs = await import('pdfjs-dist/legacy/build/pdf');
+                // create blob url
+                const ab = await (lastFile ? lastFile.arrayBuffer() : (await fetch(srcDataUrl)).arrayBuffer());
+                const blob = new Blob([ab], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const loadingTask = pdfjs.getDocument(url);
+                const pdf = await loadingTask.promise;
+                const page = await pdf.getPage(1);
+                const viewport = page.getViewport({ scale: 2 });
+                const canvas = canvasRef.current!;
+                canvas.width = Math.round(viewport.width);
+                canvas.height = Math.round(viewport.height);
+                const ctx = canvas.getContext('2d');
+                if (!ctx) throw new Error('Canvas context unavailable');
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport,
+                };
+                await page.render(renderContext).promise;
+                const dataUrl = canvas.toDataURL('image/png');
+                setOutDataUrl(dataUrl);
+                setIsConverting(false);
+                setA11yMessage('Conversion complete.');
+                setConversionProgress(100);
+                setTimeout(() => setConversionProgress(0), 700);
+                URL.revokeObjectURL(url);
+                return;
+            } catch (err) {
+                setIsConverting(false);
+                setErrorMessage('PDF→Image requires `pdfjs-dist`. Please run `npm install` and try again.');
+                setA11yMessage('PDF→Image conversion failed.');
+                console.error(err);
+                return;
+            }
+        }
+
         // If we have a worker and the original File, use worker for measured progress
         if (lastFile && typeof Worker !== 'undefined') {
             try {

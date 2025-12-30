@@ -70,6 +70,16 @@ export const imageConverters: ImageConverter[] = [
     related: ["png-to-jpg", "webp-to-png"],
   },
   {
+    slug: "image-to-pdf",
+    name: "Image to PDF Converter",
+    from: "Image",
+    to: "PDF",
+    description:
+      "Embed one image per PDF page and download as a .pdf file. Uses client-side PDF generation (pdf-lib).",
+    keywords: ["image to pdf", "png to pdf", "jpg to pdf", "convert image to pdf"],
+    related: ["jpg-to-png", "png-to-jpg"],
+  },
+  {
     slug: "png-to-svg",
     name: "PNG to SVG Converter",
     from: "PNG",
