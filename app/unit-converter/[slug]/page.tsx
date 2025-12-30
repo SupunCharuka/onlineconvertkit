@@ -39,35 +39,58 @@ export default async function Page({ params }: { params: Params | Promise<Params
   ];
 
   return (
-    <main>
-      <nav>
-        <Link href="/">Home</Link>
-      </nav>
-      <h1>{converter.name}</h1>
-      <p>{converter.description}</p>
+    <main className="min-h-screen bg-white dark:bg-black py-12 px-6">
+      <div className="mx-auto max-w-6xl">
+        <nav className="mb-6 text-sm text-zinc-500">
+          <Link href="/">Home</Link>
+          <span className="mx-2">/</span>
+          <span className="text-zinc-700 dark:text-zinc-300">{converter.name}</span>
+        </nav>
 
-      <section>
-        <ConverterClient mode="unit" unitConverter={converter} />
-      </section>
+        <header className="mb-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-50">{converter.name}</h1>
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{converter.description}</p>
+        </header>
 
-      <section>
-        <h2>About this converter</h2>
-        <SeoContent converter={converter} />
-      </section>
+        {/* Full-width converter row */}
+        <section className="mb-6 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
+          <h2 className="text-lg font-semibold mb-4">Convert {converter.from} → {converter.to}</h2>
+          <ConverterClient mode="unit" unitConverter={converter} />
+        </section>
 
-      <section>
-        <h2>Related converters</h2>
-        <ul>
-          {converter.related?.map((s) => (
-            <li key={s}>
-              <Link href={`/unit-converter/${s}`}>{unitConverterBySlug[s]?.name ?? s}</Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <section className="mt-0">
+              <h3 className="text-lg font-semibold">About this converter</h3>
+              <div className="prose max-w-none dark:prose-invert mt-4">
+                <SeoContent converter={converter} />
+              </div>
+            </section>
+          </div>
 
-      <FAQ faqs={faqs} />
-      <FAQJsonLd faqs={faqs} url={`https://example.com/unit-converter/${converter.slug}`} name={converter.name} />
+          <aside className="lg:col-span-1 space-y-6">
+            <section className="rounded-xl p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
+              <h4 className="text-sm font-semibold">Related converters</h4>
+              <ul className="mt-3 space-y-2 text-sm">
+                {converter.related?.map((s) => (
+                  <li key={s}>
+                    <Link className="text-indigo-600 hover:underline" href={`/unit-converter/${s}`}>{unitConverterBySlug[s]?.name ?? s}</Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="rounded-xl p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
+              <h4 className="text-sm font-semibold">FAQ</h4>
+              <div className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+                <FAQ faqs={faqs} />
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <FAQJsonLd faqs={faqs} url={`https://example.com/unit-converter/${converter.slug}`} name={converter.name} />
+      </div>
     </main>
   );
 }
