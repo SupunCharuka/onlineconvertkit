@@ -40,7 +40,9 @@ self.onmessage = async (e) => {
     ctx.drawImage(bitmap, 0, 0, width, height);
     postMessage({ type: 'progress', progress: 60, message: 'Drawing complete' });
 
-    const mime = targetType === 'webp' ? 'image/webp' : 'image/jpeg';
+    let mime = 'image/jpeg';
+    if (targetType === 'webp') mime = 'image/webp';
+    else if (targetType === 'png') mime = 'image/png';
     // convert to blob (encoding step)
     const outBlob = await off.convertToBlob({ type: mime, quality });
     postMessage({ type: 'progress', progress: 95, message: 'Encoding' });

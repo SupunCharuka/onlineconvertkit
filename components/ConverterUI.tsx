@@ -207,7 +207,10 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
             if (!ctx) throw new Error('Canvas not available');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0);
-            const mime = imageConverter.to.toLowerCase() === 'webp' ? 'image/webp' : 'image/jpeg';
+            const toLower = imageConverter.to.toLowerCase();
+            let mime = 'image/jpeg';
+            if (toLower === 'webp') mime = 'image/webp';
+            else if (toLower === 'png') mime = 'image/png';
             const dataUrl = canvas.toDataURL(mime, quality);
             setOutDataUrl(dataUrl);
             setIsConverting(false);

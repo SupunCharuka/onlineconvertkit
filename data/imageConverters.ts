@@ -39,6 +39,36 @@ export const imageConverters: ImageConverter[] = [
     keywords: ["png to webp", "convert png to webp", "png webp converter"],
     related: ["png-to-jpg", "jpg-to-webp"],
   },
+  {
+    slug: "webp-to-png",
+    name: "WEBP to PNG Converter",
+    from: "WEBP",
+    to: "PNG",
+    description:
+      "Convert WEBP images back to PNG while preserving transparency. Runs fully in your browser with no uploads.",
+    keywords: ["webp to png", "convert webp to png", "webp png converter"],
+    related: ["png-to-webp", "webp-to-jpg"],
+  },
+  {
+    slug: "webp-to-jpg",
+    name: "WEBP to JPG Converter",
+    from: "WEBP",
+    to: "JPG",
+    description:
+      "Convert WEBP images to JPG for wider compatibility and smaller files. Runs locally in the browser with no uploads.",
+    keywords: ["webp to jpg", "convert webp to jpg", "webp jpg converter"],
+    related: ["jpg-to-webp", "webp-to-png"],
+  },
+  {
+    slug: "jpg-to-png",
+    name: "JPG to PNG Converter",
+    from: "JPG",
+    to: "PNG",
+    description:
+      "Convert JPG images to PNG. Useful when you need lossless format or transparency-aware workflows. Conversion runs fully in your browser.",
+    keywords: ["jpg to png", "convert jpg to png", "jpg png converter"],
+    related: ["png-to-jpg", "webp-to-png"],
+  },
 ];
 
 export const imageConverterBySlug: Record<string, ImageConverter> = imageConverters.reduce(
