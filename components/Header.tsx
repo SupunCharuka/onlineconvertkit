@@ -22,7 +22,7 @@ export default function Header() {
 
                 <nav aria-label="Primary" className="hidden md:flex items-center gap-6 ml-auto">
                     <NavLink href="/">Home</NavLink>
-                    <NavLink href="/image-converter/png-to-jpg">Images</NavLink>
+                    <NavLink href="/image-converter">Images</NavLink>
                     <NavLink href="/unit-converter/meters-to-feet">Units</NavLink>
                 </nav>
 
@@ -42,7 +42,7 @@ export default function Header() {
                     <div className="absolute left-4 right-4 top-20 z-40 bg-white/90 dark:bg-black/80 rounded-lg shadow-lg p-4 md:hidden">
                         <ul className="flex flex-col gap-3">
                             <li><Link href="/" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Home</Link></li>
-                            <li><Link href="/image-converter/png-to-jpg" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Images</Link></li>
+                            <li><Link href="/image-converter" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Images</Link></li>
                             <li><Link href="/unit-converter/meters-to-feet" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Units</Link></li>
                         </ul>
                     </div>

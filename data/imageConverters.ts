@@ -29,6 +29,16 @@ export const imageConverters: ImageConverter[] = [
     keywords: ["jpg to webp", "convert jpg to webp", "jpg webp converter"],
     related: ["png-to-jpg"],
   },
+  {
+    slug: "png-to-webp",
+    name: "PNG to WEBP Converter",
+    from: "PNG",
+    to: "WEBP",
+    description:
+      "Convert PNG images to modern WEBP format for smaller files while preserving quality. Processing is done locally in your browser.",
+    keywords: ["png to webp", "convert png to webp", "png webp converter"],
+    related: ["png-to-jpg", "jpg-to-webp"],
+  },
 ];
 
 export const imageConverterBySlug: Record<string, ImageConverter> = imageConverters.reduce(

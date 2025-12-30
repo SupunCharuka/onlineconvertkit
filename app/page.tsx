@@ -13,7 +13,7 @@ export default function Home() {
         <section className="mt-10">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">Image Converters</h2>
-            <Link href="/image-converter/png-to-jpg" className="text-sm text-indigo-600">See all</Link>
+            <Link href="/image-converter" className="text-sm text-indigo-600">See all</Link>
           </div>
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {imageConverters.map((c) => (

@@ -45,3 +45,8 @@
 }
 .pulse-slow { animation: pulse-slow 1200ms infinite ease-in-out; }
 
+/* subtle card accent used on index */
+.card-accent {
+	background-image: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(14,165,233,0.04));
+}
+
