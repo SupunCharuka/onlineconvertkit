@@ -35,6 +35,7 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
     const [showToast, setShowToast] = useState(false);
     const [conversionProgress, setConversionProgress] = useState<number>(0);
     const progressTimerRef = useRef<number | null>(null);
+    const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [lastFile, setLastFile] = useState<File | null>(null);
     const workerRef = useRef<Worker | null>(null);
 
@@ -76,11 +77,27 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
         }
         setErrorMessage("");
         const reader = new FileReader();
+        reader.onprogress = (ev) => {
+            if (ev.lengthComputable) {
+                const pct = Math.round((ev.loaded / ev.total) * 100);
+                setUploadProgress(pct);
+            } else {
+                // approximate progress for unknown size
+                setUploadProgress((p) => Math.min(95, p + 8));
+            }
+        };
         reader.onload = () => {
             setSrcDataUrl(String(reader.result));
             setOutDataUrl(null);
             setLastFile(file);
             setA11yMessage("Image loaded. Ready to convert.");
+            setUploadProgress(100);
+            setTimeout(() => setUploadProgress(0), 600);
+        };
+        reader.onloadend = () => {
+            // ensure progress resets if onload didn't fire
+            if (uploadProgress < 100) setUploadProgress(100);
+            setTimeout(() => setUploadProgress(0), 600);
         };
         reader.readAsDataURL(file);
     }
@@ -277,13 +294,21 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
                         onDragLeave={onDragLeave}
                     >
                         <input ref={inputRef} className="hidden" type="file" accept="image/*" onChange={handleFileInput} aria-hidden />
-                        <div className="text-center">
+                        <div className="text-center relative">
                             <svg className="mx-auto h-8 w-8 text-zinc-400" viewBox="0 0 24 24" fill="none" aria-hidden>
                                 <path d="M12 3v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 <path d="M8 7l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                             <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">Drag & drop an image here, or click to select</div>
                             <div className="mt-1 text-xs text-zinc-400">Supported: PNG, JPG, WEBP</div>
+                            {uploadProgress > 0 && (
+                                <div className="absolute left-4 right-4 bottom-[-14px]">
+                                    <div className="h-2 rounded-full overflow-hidden shadow-sm">
+                                        <div style={{ width: `${uploadProgress}%` }} className="h-full bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 transition-all" />
+                                    </div>
+                                    <div className="mt-1 text-xs text-center text-zinc-600 dark:text-zinc-300">Uploading — {uploadProgress}%</div>
+                                </div>
+                            )}
                         </div>
                     </label>
 
