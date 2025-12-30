@@ -35,6 +35,8 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
     const [showToast, setShowToast] = useState(false);
     const [conversionProgress, setConversionProgress] = useState<number>(0);
     const progressTimerRef = useRef<number | null>(null);
+    const [lastFile, setLastFile] = useState<File | null>(null);
+    const workerRef = useRef<Worker | null>(null);
 
     // Unit state
     const [inputValue, setInputValue] = useState<string>("");
@@ -77,6 +79,7 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
         reader.onload = () => {
             setSrcDataUrl(String(reader.result));
             setOutDataUrl(null);
+            setLastFile(file);
             setA11yMessage("Image loaded. Ready to convert.");
         };
         reader.readAsDataURL(file);
@@ -89,50 +92,80 @@ export default function ConverterUI({ mode, imageConverter, unitConverter }: Pro
         // start conversion UI
         setIsConverting(true);
         setConversionProgress(4);
-        // simulated progress: advance until the real conversion completes
-        if (progressTimerRef.current) window.clearInterval(progressTimerRef.current);
-        progressTimerRef.current = window.setInterval(() => {
-            setConversionProgress((p) => {
-                const delta = Math.random() * 8 + 4; // 4-12%
-                const next = Math.min(98, Math.round(p + delta));
-                return next;
-            });
-        }, 220);
-        const img = new Image();
-        img.src = srcDataUrl;
-        await img.decode();
-        const canvas = canvasRef.current!;
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
 
-        const mime = imageConverter.to.toLowerCase() === "webp" ? "image/webp" : "image/jpeg";
-        const dataUrl = canvas.toDataURL(mime, quality);
-        try {
-            // small delay to show spinner for UX
-            setTimeout(() => {
-                // finalize progress
+        // If we have a worker and the original File, use worker for measured progress
+        if (lastFile && typeof Worker !== 'undefined') {
+            try {
                 if (progressTimerRef.current) {
                     window.clearInterval(progressTimerRef.current);
                     progressTimerRef.current = null;
                 }
-                setConversionProgress(100);
-                setOutDataUrl(dataUrl);
-                setIsConverting(false);
-                setA11yMessage("Conversion complete.");
-                // hide progress after a moment
-                setTimeout(() => setConversionProgress(0), 700);
-            }, 150);
-        } catch (err) {
+                if (!workerRef.current) {
+                    workerRef.current = new Worker('/image-converter-worker.js');
+                }
+                const wk = workerRef.current;
+                wk.onmessage = (ev) => {
+                    const d = ev.data || {};
+                    if (d.type === 'progress') {
+                        setConversionProgress(Number(d.progress || 0));
+                        if (d.message) setA11yMessage(String(d.message));
+                    } else if (d.type === 'result') {
+                        const buf = d.buffer;
+                        const mime = d.mime || 'image/jpeg';
+                        const outBlob = new Blob([buf], { type: mime });
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            setOutDataUrl(String(reader.result));
+                            setIsConverting(false);
+                            setA11yMessage('Conversion complete.');
+                            setConversionProgress(100);
+                            setTimeout(() => setConversionProgress(0), 700);
+                        };
+                        reader.readAsDataURL(outBlob);
+                    } else if (d.type === 'error') {
+                        setIsConverting(false);
+                        setErrorMessage(String(d.message || 'Worker error'));
+                        setA11yMessage(String(d.message || 'Worker error'));
+                        setConversionProgress(0);
+                    }
+                };
+
+                const arrayBuffer = await lastFile.arrayBuffer();
+                wk.postMessage({ type: 'convert', fileBuffer: arrayBuffer, fileType: lastFile.type, targetType: imageConverter.to.toLowerCase(), quality }, [arrayBuffer]);
+                return;
+            } catch (err) {
+                // fall back to main-thread conversion if worker fails
+                console.warn('Worker conversion failed, falling back:', err);
+            }
+        }
+
+        // Fallback: synchronous canvas conversion on main thread
+        try {
             if (progressTimerRef.current) {
                 window.clearInterval(progressTimerRef.current);
                 progressTimerRef.current = null;
             }
+            const img = new Image();
+            img.src = srcDataUrl;
+            await img.decode();
+            const canvas = canvasRef.current!;
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) throw new Error('Canvas not available');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+            const mime = imageConverter.to.toLowerCase() === 'webp' ? 'image/webp' : 'image/jpeg';
+            const dataUrl = canvas.toDataURL(mime, quality);
+            setOutDataUrl(dataUrl);
+            setIsConverting(false);
+            setA11yMessage('Conversion complete.');
+            setConversionProgress(100);
+            setTimeout(() => setConversionProgress(0), 700);
+        } catch (err) {
+            setIsConverting(false);
             setConversionProgress(0);
-            const msg = "Conversion failed. Please try a different image.";
+            const msg = 'Conversion failed. Please try a different image.';
             setErrorMessage(msg);
             setA11yMessage(msg);
         }
