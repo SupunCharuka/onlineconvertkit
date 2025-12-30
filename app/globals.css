@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
+
 /* Toast / notification animations and backdrop */
 @keyframes toast-in {
 	from { transform: translateY(-8px); opacity: 0; }
@@ -44,30 +44,4 @@
 	100% { transform: scale(1); opacity: 1 }
 }
 .pulse-slow { animation: pulse-slow 1200ms infinite ease-in-out; }
-
-/* Smooth theme transitions for background and text */
-body {
-	transition: background-color 240ms ease, color 240ms ease;
-}
-
-header, footer, main {
-	transition: background-color 240ms ease, color 240ms ease;
-}
-
-/* explicit light theme helper to ensure white backgrounds when light is active */
-.theme-light {
-	background-color: #ffffff !important;
-	color: #111827 !important;
-}
-
-.theme-light header, .theme-light main, .theme-light footer {
-	background-color: transparent !important;
-}
-
-/* Brief animation when theme switches */
-.theme-change header, .theme-change main, .theme-change footer {
-	transition: transform 340ms cubic-bezier(.2,.9,.2,1), opacity 340ms ease, background-color 340ms ease, color 340ms ease;
-	transform: scale(1.01);
-	opacity: 0.97;
-}
 
