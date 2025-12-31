@@ -44,6 +44,8 @@ export default async function Page({ params }: { params: Params | Promise<Params
         <nav className="mb-6 text-sm text-zinc-500">
           <Link href="/">Home</Link>
           <span className="mx-2">/</span>
+          <Link href="/unit-converter">Unit Converters</Link>
+          <span className="mx-2">/</span>
           <span className="text-zinc-700 dark:text-zinc-300">{converter.name}</span>
         </nav>
 

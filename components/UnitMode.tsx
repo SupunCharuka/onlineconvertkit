@@ -51,10 +51,122 @@ export default function UnitMode({ unitConverter }: Props) {
         const v = parseFloat(inputValue);
         if (Number.isNaN(v)) return setOutputValue("");
         let res = v;
-        if (unitConverter.slug === "meters-to-feet") {
-            res = v * 3.280839895;
-        } else if (unitConverter.slug === "celsius-to-fahrenheit") {
-            res = v * 9 / 5 + 32;
+        switch (unitConverter.slug) {
+            case "meters-to-feet":
+                res = v * 3.280839895;
+                break;
+            case "kilometers-to-miles":
+                res = v * 0.621371192237334;
+                break;
+            case "centimeters-to-inches":
+                res = v * 0.3937007874015748;
+                break;
+            case "inches-to-centimeters":
+                res = v * 2.54;
+                break;
+            case "kilograms-to-pounds":
+                res = v * 2.204622621848776;
+                break;
+            case "grams-to-ounces":
+                res = v * 0.03527396194958041;
+                break;
+            case "liters-to-gallons":
+                // US liquid gallons
+                res = v * 0.2641720523581484;
+                break;
+            case "milliliters-to-fluid-ounces":
+                res = v * 0.033814022701843;
+                break;
+            case "celsius-to-fahrenheit":
+                res = v * 9 / 5 + 32;
+                break;
+            case "fahrenheit-to-celsius":
+                res = (v - 32) * 5 / 9;
+                break;
+            case "celsius-to-kelvin":
+                res = v + 273.15;
+                break;
+            case "kelvin-to-celsius":
+                res = v - 273.15;
+                break;
+            case "kmh-to-mph":
+                res = v * 0.621371192237334;
+                break;
+            case "square-meters-to-square-feet":
+                res = v * 10.76391041671;
+                break;
+            case "miles-to-kilometers":
+                res = v * 1.609344;
+                break;
+            case "yards-to-meters":
+                res = v * 0.9144;
+                break;
+            case "feet-to-meters":
+                res = v * 0.3048;
+                break;
+            case "acres-to-square-meters":
+                res = v * 4046.8564224;
+                break;
+            case "hectares-to-square-meters":
+                res = v * 10000;
+                break;
+            case "cups-to-milliliters":
+                res = v * 236.5882365;
+                break;
+            case "pints-to-liters":
+                res = v * 0.473176473;
+                break;
+            case "quarts-to-liters":
+                res = v * 0.946352946;
+                break;
+            case "gallons-to-liters":
+                res = v * 3.785411784;
+                break;
+            case "bar-to-psi":
+                res = v * 14.503773773;
+                break;
+            case "joules-to-calories":
+                res = v * 0.239005736;
+                break;
+            case "joules-to-kilocalories":
+                res = v * 0.000239005736;
+                break;
+            case "seconds-to-minutes":
+                res = v / 60;
+                break;
+            case "minutes-to-hours":
+                res = v / 60;
+                break;
+            case "hours-to-days":
+                res = v / 24;
+                break;
+            case "bytes-to-kilobytes":
+                res = v / 1024;
+                break;
+            case "kilobytes-to-megabytes":
+                res = v / 1024;
+                break;
+            case "degrees-to-radians":
+                res = v * (Math.PI / 180);
+                break;
+            case "radians-to-degrees":
+                res = v * (180 / Math.PI);
+                break;
+            case "pounds-to-kilograms":
+                res = v * 0.45359237;
+                break;
+            case "ounces-to-grams":
+                res = v * 28.349523125;
+                break;
+            case "meters-per-second-to-kmh":
+                res = v * 3.6;
+                break;
+            case "knots-to-kmh":
+                res = v * 1.852;
+                break;
+            default:
+                // Unknown converter: pass-through
+                res = v;
         }
         setOutputValue(String(Number(res.toFixed(decimals))));
     }
