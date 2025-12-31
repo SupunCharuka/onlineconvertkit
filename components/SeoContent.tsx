@@ -70,7 +70,7 @@ export function generateLongSeoContent(converter: AnyConverter) {
   const variants = [
     `The converter is built to handle everyday workflows and can be used as part of a content production process.`,
     `Because it runs locally it is fast and responsive.`,
-    `No sign-up, no uploads — just instant conversion in your browser.`,
+    `No sign-up, no logging — just instant conversion in your browser.`,
     `Ideal for web professionals and casual users alike.`,
   ];
 
@@ -83,7 +83,7 @@ export function generateLongSeoContent(converter: AnyConverter) {
 }
 
 export function generateMetaDescription(converter: AnyConverter) {
-  return `${converter.name} — Convert ${converter.from} to ${converter.to} instantly in your browser. Fast, private, no uploads.`;
+  return `${converter.name} — Convert ${converter.from} to ${converter.to} instantly in your browser. Fast, private, no logging.`;
 }
 
 export default function SeoContent({ converter }: { converter: AnyConverter }) {

@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function MathPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-zinc-50 dark:from-black dark:to-zinc-900 py-12 px-6">
+    <main className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-6">
       <div className="mx-auto max-w-4xl">
         <header className="mb-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 dark:text-zinc-50">Math Converter</h1>

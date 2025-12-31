@@ -15,7 +15,7 @@ export const imageConverters: ImageConverter[] = [
     from: "PNG",
     to: "JPG",
     description:
-      "Convert PNG images to high-quality JPG format in the browser using Canvas API. Supports drag & drop and batch downloads.",
+      "Convert PNG images to high-quality JPG format in the browser. Supports drag & drop and batch downloads.",
     keywords: ["png to jpg", "convert png to jpg", "png jpg converter"],
     related: ["jpg-to-webp"],
   },
@@ -25,7 +25,7 @@ export const imageConverters: ImageConverter[] = [
     from: "JPG",
     to: "WEBP",
     description:
-      "Convert JPG images to modern WEBP for smaller file sizes and faster loading. Runs fully in-browser with no uploads.",
+      "Convert JPG images to modern WEBP for smaller file sizes and faster loading. Runs fully in-browser with no logging.",
     keywords: ["jpg to webp", "convert jpg to webp", "jpg webp converter"],
     related: ["png-to-jpg"],
   },
@@ -45,7 +45,7 @@ export const imageConverters: ImageConverter[] = [
     from: "WEBP",
     to: "PNG",
     description:
-      "Convert WEBP images back to PNG while preserving transparency. Runs fully in your browser with no uploads.",
+      "Convert WEBP images back to PNG while preserving transparency. Runs fully in your browser with no logging.",
     keywords: ["webp to png", "convert webp to png", "webp png converter"],
     related: ["png-to-webp", "webp-to-jpg"],
   },
@@ -55,7 +55,7 @@ export const imageConverters: ImageConverter[] = [
     from: "WEBP",
     to: "JPG",
     description:
-      "Convert WEBP images to JPG for wider compatibility and smaller files. Runs locally in the browser with no uploads.",
+      "Convert WEBP images to JPG for wider compatibility and smaller files. Runs locally in the browser with no logging.",
     keywords: ["webp to jpg", "convert webp to jpg", "webp jpg converter"],
     related: ["jpg-to-webp", "webp-to-png"],
   },

@@ -37,7 +37,7 @@ export default async function Page({ params }: { params: Params | Promise<Params
 
   const faqs = [
     { question: `Is ${converter.name} free to use?`, answer: `Yes — ${converter.name} runs in your browser and is free to use.` },
-    { question: `Do files leave my device?`, answer: `No. All processing happens locally in your browser with no uploads.` },
+    { question: `Do files leave my device?`, answer: `No. All processing happens locally in your browser with no logging.` },
   ];
 
   return (
