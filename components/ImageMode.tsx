@@ -484,85 +484,105 @@ export default function ImageMode({ imageConverter }: Props) {
                             )}
                         </div>
                     </div>
-
-                    <aside className="rounded-md border p-4 bg-zinc-50 dark:bg-zinc-900">
-                        <label className="text-sm block">Quality: <span className="ml-1 font-medium">{Math.round(quality * 100)}%</span></label>
-                        <input type="range" min={0.5} max={1} step={0.01} value={quality} onChange={(e) => setQuality(Number(e.target.value))} className="w-full mt-2" />
-                        <div className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">Output: {imageConverter?.to}</div>
+                    {/* resize and quality controls bar */}
+                    <aside className="rounded-lg border p-4 bg-gradient-to-b from-white/60 to-white/30 dark:from-zinc-900/60 dark:to-zinc-900/30 backdrop-blur-sm">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <svg viewBox="0 0 24 24" className="h-6 w-6 text-indigo-600 dark:text-indigo-400" aria-hidden>
+                                    <path d="M12 2L7 7h3v7h4V7h3l-5-5z" fill="currentColor" />
+                                </svg>
+                                <div>
+                                    <div className="text-sm font-semibold">Resize & Quality</div>
+                                    <div className="text-xs text-zinc-500 dark:text-zinc-400">Fine-tune output size and compression</div>
+                                </div>
+                            </div>
+                            <div className="text-xs text-zinc-500">Output: <span className="font-medium text-zinc-700 dark:text-zinc-200">{imageConverter?.to}</span></div>
+                        </div>
 
                         <div className="mt-4">
-                            <div className="text-sm font-medium">Resize</div>
-                            <div className="mt-2 grid grid-cols-2 gap-2">
+                            <div className="flex items-center justify-between">
+                                <div className="text-xs text-zinc-600 dark:text-zinc-300">Quality</div>
+                                <div className="text-sm font-medium">{Math.round(quality * 100)}%</div>
+                            </div>
+                            <div className="mt-2">
+                                <input aria-label="Quality" type="range" min={0.1} max={1} step={0.01} value={quality} onChange={(e) => setQuality(Number(e.target.value))} className="w-full h-2 rounded-lg accent-indigo-500" />
+                            </div>
+                            <div className="mt-2 flex items-center justify-between text-xs text-zinc-500">
+                                <div className="flex items-center gap-2">
+                                    <button type="button" onClick={() => setQuality(0.92)} className="px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs">Default</button>
+                                    <button type="button" onClick={() => setQuality(0.8)} className="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-xs">Web</button>
+                                </div>
+                                <div className="text-xs text-zinc-400">Lower = smaller file</div>
+                            </div>
+                        </div>
+
+                        <div className="mt-4 border-t pt-4">
+                            <div className="flex items-center justify-between">
+                                <div className="text-sm font-medium">Resize</div>
+                                <div className="text-xs text-zinc-500">{originalWidth ? `${originalWidth}×${originalHeight}` : 'Unknown'}</div>
+                            </div>
+
+                            <div className="mt-3 grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="text-xs block">Width</label>
-                                    <input
-                                        type="number"
-                                        min={1}
-                                        value={resizeWidth ?? ''}
-                                        onChange={(e) => {
-                                            const v = Math.max(0, Number(e.target.value) || 0);
-                                            setResizeWidth(v || null);
+                                    <label className="text-xs text-zinc-500">Width</label>
+                                    <div className="mt-1 flex items-center gap-2">
+                                        <input aria-label="Width" inputMode="numeric" pattern="[0-9]*" type="number" min={1} value={resizeWidth ?? ''} onChange={(e) => {
+                                            const raw = e.target.value;
+                                            if (raw === '') {
+                                                setResizeWidth(null);
+                                                return;
+                                            }
+                                            const n = parseInt(raw, 10);
+                                            if (Number.isNaN(n)) return;
+                                            const v = Math.max(1, n);
+                                            setResizeWidth(v);
                                             if (keepAspect && originalWidth && originalHeight && v) {
                                                 const newH = Math.round((v / originalWidth) * originalHeight);
                                                 setResizeHeight(newH);
                                             }
-                                        }}
-                                        className="w-full mt-1 rounded-md border px-2 py-1 text-sm"
-                                    />
+                                        }} className="w-full rounded-md border px-2 py-1 text-sm" />
+                                    </div>
                                 </div>
                                 <div>
-                                    <label className="text-xs block">Height</label>
-                                    <input
-                                        type="number"
-                                        min={1}
-                                        value={resizeHeight ?? ''}
-                                        onChange={(e) => {
-                                            const v = Math.max(0, Number(e.target.value) || 0);
-                                            setResizeHeight(v || null);
+                                    <label className="text-xs text-zinc-500">Height</label>
+                                    <div className="mt-1 flex items-center gap-2">
+                                        <input aria-label="Height" inputMode="numeric" pattern="[0-9]*" type="number" min={1} value={resizeHeight ?? ''} onChange={(e) => {
+                                            const raw = e.target.value;
+                                            if (raw === '') {
+                                                setResizeHeight(null);
+                                                return;
+                                            }
+                                            const n = parseInt(raw, 10);
+                                            if (Number.isNaN(n)) return;
+                                            const v = Math.max(1, n);
+                                            setResizeHeight(v);
                                             if (keepAspect && originalWidth && originalHeight && v) {
                                                 const newW = Math.round((v / originalHeight) * originalWidth);
                                                 setResizeWidth(newW);
                                             }
-                                        }}
-                                        className="w-full mt-1 rounded-md border px-2 py-1 text-sm"
-                                    />
+                                        }} className="w-full rounded-md border px-2 py-1 text-sm" />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="mt-2 flex items-center gap-2">
+                            <div className="mt-3 flex items-center justify-between">
                                 <label className="flex items-center gap-2 text-sm">
-                                    <input type="checkbox" checked={keepAspect} onChange={(e) => setKeepAspect(e.target.checked)} className="h-4 w-4" />
-                                    Preserve aspect ratio
+                                    <input aria-label="Preserve aspect ratio" type="checkbox" checked={keepAspect} onChange={(e) => setKeepAspect(e.target.checked)} className="h-4 w-4" />
+                                    Preserve aspect
                                 </label>
+                                <div className="text-xs text-zinc-500">Preview: <span className="font-medium text-zinc-700 dark:text-zinc-200">{resizeWidth ?? '-'}×{resizeHeight ?? '-'}</span></div>
                             </div>
 
-                            <div className="mt-3 text-sm flex flex-wrap gap-2">
+                            <div className="mt-3 flex flex-wrap gap-2">
                                 <button type="button" onClick={() => {
-                                    if (originalWidth && originalHeight) {
-                                        setResizeWidth(Math.round(originalWidth * 0.5));
-                                        setResizeHeight(Math.round(originalHeight * 0.5));
-                                    }
-                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">50%</button>
+                                    if (originalWidth && originalHeight) { setResizeWidth(Math.round(originalWidth * 0.5)); setResizeHeight(Math.round(originalHeight * 0.5)); }
+                                }} className="px-3 py-1 rounded-full bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20 text-xs">50%</button>
                                 <button type="button" onClick={() => {
-                                    if (originalWidth && originalHeight) {
-                                        setResizeWidth(Math.round(originalWidth * 0.75));
-                                        setResizeHeight(Math.round(originalHeight * 0.75));
-                                    }
-                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">75%</button>
-                                <button type="button" onClick={() => {
-                                    if (originalWidth && originalHeight) {
-                                        setResizeWidth(originalWidth); setResizeHeight(originalHeight);
-                                    }
-                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">Original</button>
-                                <button type="button" onClick={() => {
-                                    if (originalWidth && originalHeight) {
-                                        setResizeWidth(Math.round(originalWidth * 2));
-                                        setResizeHeight(Math.round(originalHeight * 2));
-                                    }
-                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">200%</button>
+                                    if (originalWidth && originalHeight) { setResizeWidth(Math.round(originalWidth * 0.75)); setResizeHeight(Math.round(originalHeight * 0.75)); }
+                                }} className="px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs">75%</button>
+                                <button type="button" onClick={() => { if (originalWidth && originalHeight) { setResizeWidth(originalWidth); setResizeHeight(originalHeight); } }} className="px-3 py-1 rounded-full bg-zinc-50 dark:bg-zinc-900/20 text-xs">Original</button>
+                                <button type="button" onClick={() => { if (originalWidth && originalHeight) { setResizeWidth(Math.round(originalWidth * 2)); setResizeHeight(Math.round(originalHeight * 2)); } }} className="px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs">200%</button>
                             </div>
-
-                            <div className="mt-2 text-xs text-zinc-500">{originalWidth ? `Original: ${originalWidth}×${originalHeight}` : 'Original dimensions unknown'}</div>
                         </div>
                     </aside>
                 </div>
