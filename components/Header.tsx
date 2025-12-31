@@ -23,7 +23,7 @@ export default function Header() {
                 <nav aria-label="Primary" className="hidden md:flex items-center gap-6 ml-auto">
                     <NavLink href="/">Home</NavLink>
                     <NavLink href="/image-converter">Images</NavLink>
-                    <NavLink href="/unit-converter/meters-to-feet">Units</NavLink>
+                    <NavLink href="/unit-converter">Units</NavLink>
                 </nav>
 
                 <div className="md:hidden ml-auto">

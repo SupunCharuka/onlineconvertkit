@@ -25,7 +25,7 @@ export default function Home() {
         <section className="mt-12">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">Unit Converters</h2>
-            <Link href="/unit-converter/meters-to-feet" className="text-sm text-indigo-600">See all</Link>
+            <Link href="/unit-converter" className="text-sm text-indigo-600">See all</Link>
           </div>
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {unitConverters.map((c) => (
