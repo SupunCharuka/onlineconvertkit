@@ -66,7 +66,6 @@ export function generateLongSeoContent(converter: AnyConverter) {
   // Ensure we reach roughly 800-1000 words by expanding variations
   let content = paragraphs.join("\n\n");
   const target = 900;
-  let i = 0;
   const variants = [
     `The converter is built to handle everyday workflows and can be used as part of a content production process.`,
     `Because it runs locally it is fast and responsive.`,
@@ -74,9 +73,16 @@ export function generateLongSeoContent(converter: AnyConverter) {
     `Ideal for web professionals and casual users alike.`,
   ];
 
-  while (wordCount(content) < target && i < 50) {
-    content += "\n\n" + variants[i % variants.length] + ` (${i + 1})`;
-    i += 1;
+  // Append a small number of varied sentences (max 6) to reach the target word count.
+  // This avoids repeating identical short lines many times which can look spammy.
+  let j = 0;
+  const maxAdds = 6;
+  while (wordCount(content) < target && j < maxAdds) {
+    const v = variants[j % variants.length];
+    // Add a tiny unique suffix referencing the converter to reduce exact duplicates.
+    const suffix = j % 2 === 0 ? ` Use ${converter.name} to convert ${converter.from} to ${converter.to}.` : ` It's a handy tool for ${converter.to} conversions.`;
+    content += "\n\n" + v + suffix;
+    j += 1;
   }
 
   return content;
@@ -88,5 +94,34 @@ export function generateMetaDescription(converter: AnyConverter) {
 
 export default function SeoContent({ converter }: { converter: AnyConverter }) {
   const content = generateLongSeoContent(converter);
-  return <article dangerouslySetInnerHTML={{ __html: content.replace(/\n\n/g, "<p></p>") }} />;
+  const paragraphs = content.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+
+  return (
+    <article className="prose prose-zinc dark:prose-invert max-w-none">
+      {/* Lead card */}
+      {paragraphs[0] && (
+        <div className="rounded-2xl p-5 mb-4 bg-gradient-to-r from-indigo-50 to-pink-50 dark:from-zinc-900/40 dark:to-zinc-800/30 border border-zinc-100 dark:border-zinc-800">
+          <h4 className="text-lg font-semibold">About {converter.name}</h4>
+          <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">{paragraphs[0]}</p>
+        </div>
+      )}
+
+      {/* Main content paragraphs */}
+      <div className="space-y-4">
+        {paragraphs.slice(1).map((p, i) => (
+          <p key={i} className="text-sm text-zinc-700 dark:text-zinc-300">{p}</p>
+        ))}
+      </div>
+
+      {/* Quick tips callout */}
+      <div className="mt-6 rounded-lg p-4 bg-white/60 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800 shadow-sm">
+        <h5 className="font-semibold">Quick Tips</h5>
+        <ul className="mt-2 list-disc ml-6 text-sm text-zinc-700 dark:text-zinc-300">
+          <li>Preview results before replacing assets on production sites.</li>
+          <li>Keep originals backed up; convert copies when experimenting.</li>
+          <li>Prefer modern formats (WebP/AVIF) where supported to improve performance.</li>
+        </ul>
+      </div>
+    </article>
+  );
 }

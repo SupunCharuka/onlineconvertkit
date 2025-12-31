@@ -10,7 +10,7 @@ export const metadata = {
 export default function MathPage() {
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-6">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-6xl">
         <header className="mb-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 dark:text-zinc-50">Math Converter</h1>
           <p className="mt-3 max-w-2xl mx-auto text-sm text-zinc-600 dark:text-zinc-400">Evaluate numeric expressions and perform symbolic operations locally in your browser.</p>
