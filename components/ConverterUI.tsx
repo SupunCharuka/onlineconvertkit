@@ -4,9 +4,10 @@ import type { ImageConverter } from "../data/imageConverters";
 import type { UnitConverter } from "../data/unitConverters";
 import ImageMode from "./ImageMode";
 import UnitMode from "./UnitMode";
+import MathMode from "./MathMode";
 
 type Props = {
-    mode: "image" | "unit";
+    mode: "image" | "unit" | "math";
     imageConverter?: ImageConverter;
     unitConverter?: UnitConverter;
 };
@@ -26,7 +27,13 @@ function downloadDataUrl(dataUrl: string, filename: string) {
 export default function ConverterUI({ mode, imageConverter, unitConverter }: Props) {
     return (
         <section>
-            {mode === 'image' ? <ImageMode imageConverter={imageConverter} /> : <UnitMode unitConverter={unitConverter} />}
+            {mode === 'image' ? (
+                <ImageMode imageConverter={imageConverter} />
+            ) : mode === 'unit' ? (
+                <UnitMode unitConverter={unitConverter} />
+            ) : (
+                <MathMode />
+            )}
 
             {/* Accessible status region for screen readers */}
             <div role="status" aria-live="polite" className="sr-only"> </div>

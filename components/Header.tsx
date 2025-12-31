@@ -24,6 +24,7 @@ export default function Header() {
                     <NavLink href="/">Home</NavLink>
                     <NavLink href="/image-converter">Images</NavLink>
                     <NavLink href="/unit-converter">Units</NavLink>
+                    <NavLink href="/math">Math</NavLink>
                 </nav>
 
                 <div className="md:hidden ml-auto">
@@ -44,6 +45,7 @@ export default function Header() {
                             <li><Link href="/" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Home</Link></li>
                             <li><Link href="/image-converter" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Images</Link></li>
                             <li><Link href="/unit-converter/meters-to-feet" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Units</Link></li>
+                            <li><Link href="/math" onClick={() => setOpen(false)} className="block px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900">Math</Link></li>
                         </ul>
                     </div>
                 )}

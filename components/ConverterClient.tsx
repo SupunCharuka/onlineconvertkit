@@ -5,6 +5,6 @@ import type { UnitConverter } from "../data/unitConverters";
 
 const ConverterUI = dynamic(() => import("./ConverterUI"), { ssr: false });
 
-export default function ConverterClient(props: { mode: "image" | "unit"; imageConverter?: ImageConverter; unitConverter?: UnitConverter }) {
+export default function ConverterClient(props: { mode: "image" | "unit" | "math"; imageConverter?: ImageConverter; unitConverter?: UnitConverter }) {
   return <ConverterUI {...props} />;
 }
