@@ -32,6 +32,11 @@ export default function ImageMode({ imageConverter }: Props) {
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [lastFile, setLastFile] = useState<File | null>(null);
     const workerRef = useRef<Worker | null>(null);
+    const [originalWidth, setOriginalWidth] = useState<number | null>(null);
+    const [originalHeight, setOriginalHeight] = useState<number | null>(null);
+    const [resizeWidth, setResizeWidth] = useState<number | null>(null);
+    const [resizeHeight, setResizeHeight] = useState<number | null>(null);
+    const [keepAspect, setKeepAspect] = useState<boolean>(true);
 
     const onDrop = useCallback((e: React.DragEvent) => {
         e.preventDefault();
@@ -98,10 +103,48 @@ export default function ImageMode({ imageConverter }: Props) {
 
         const target = imageConverter.to.toLowerCase();
 
+        // prepare file to use for conversion (original or resized)
+        let fileToUse: File | null = lastFile;
+        const wantsResize = resizeWidth && resizeHeight && originalWidth && originalHeight && (resizeWidth !== originalWidth || resizeHeight !== originalHeight);
+
+        if (wantsResize && lastFile) {
+            try {
+                // create resized blob from the source data URL
+                const blob = await new Promise<Blob | null>((resolve) => {
+                    const img = new Image();
+                    img.src = srcDataUrl as string;
+                    img.onload = () => {
+                        const canvas = canvasRef.current!;
+                        const tw = resizeWidth as number;
+                        const th = resizeHeight as number;
+                        canvas.width = tw;
+                        canvas.height = th;
+                        const ctx = canvas.getContext('2d');
+                        if (!ctx) return resolve(null);
+                        ctx.clearRect(0, 0, tw, th);
+                        ctx.drawImage(img, 0, 0, tw, th);
+                        canvas.toBlob((b) => resolve(b || null), lastFile.type || 'image/png', quality);
+                    };
+                    img.onerror = () => resolve(null);
+                });
+                if (blob) {
+                    const f = new File([blob], lastFile.name.replace(/(\.[^.]+)?$/, `_resized$1`), { type: blob.type || lastFile.type });
+                    fileToUse = f;
+                    // also update a temporary srcDataUrl for main-thread fallback
+                    const rdr = new FileReader();
+                    const p = new Promise<void>((res) => { rdr.onload = () => { setSrcDataUrl(String(rdr.result)); res(); }; });
+                    rdr.readAsDataURL(blob);
+                    await p;
+                }
+            } catch (err) {
+                console.warn('Resizing failed, proceeding with original file', err);
+            }
+        }
+
         if (target === 'pdf') {
             try {
                 const { PDFDocument } = await import('pdf-lib');
-                const arrayBuffer = await (lastFile ? lastFile.arrayBuffer() : (await fetch(srcDataUrl)).arrayBuffer());
+                const arrayBuffer = await (fileToUse ? fileToUse.arrayBuffer() : (await fetch(srcDataUrl)).arrayBuffer());
                 const imgType = (lastFile?.type || '').toLowerCase();
                 const pdfDoc = await PDFDocument.create();
                 let img;
@@ -110,7 +153,10 @@ export default function ImageMode({ imageConverter }: Props) {
                 const page = pdfDoc.addPage([img.width, img.height]);
                 page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
                 const pdfBytes = await pdfDoc.save();
-                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                // Ensure we pass an ArrayBuffer (not a SharedArrayBuffer-like) to Blob
+                const pdfArr = pdfBytes instanceof Uint8Array ? pdfBytes : new Uint8Array(pdfBytes as any);
+                const pdfBuffer = pdfArr.buffer.slice(pdfArr.byteOffset, pdfArr.byteOffset + pdfArr.byteLength);
+                const blob = new Blob([pdfBuffer], { type: 'application/pdf' });
                 const reader = new FileReader();
                 reader.onload = () => {
                     setOutDataUrl(String(reader.result));
@@ -130,17 +176,18 @@ export default function ImageMode({ imageConverter }: Props) {
             }
         }
 
-        if (lastFile && (lastFile.type.includes('heic') || lastFile.type.includes('heif'))) {
+        const fileCheck = fileToUse || lastFile;
+        if (fileCheck && (fileCheck.type.includes('heic') || fileCheck.type.includes('heif'))) {
             try {
-                const arrayBuf = await lastFile.arrayBuffer();
+                const arrayBuf = await fileCheck.arrayBuffer();
                 const heicModule = await import('heic2any').catch(() => null);
                 const heic2any = heicModule?.default ?? heicModule;
                 if (!heic2any) throw new Error('heic2any not available');
 
-                const blob = new Blob([arrayBuf], { type: lastFile.type });
+                const blob = new Blob([arrayBuf], { type: fileCheck.type });
                 const to = imageConverter.to.toLowerCase();
                 const toType = to === 'png' ? 'image/png' : to === 'webp' ? 'image/webp' : 'image/jpeg';
-                const outBlob = await heic2any({ blob, toType });
+                const outBlob = await (heic2any as any)({ blob, toType });
                 const reader = new FileReader();
                 reader.onload = () => {
                     setOutDataUrl(String(reader.result));
@@ -161,8 +208,7 @@ export default function ImageMode({ imageConverter }: Props) {
                 return;
             }
         }
-
-        if (lastFile && typeof Worker !== 'undefined') {
+        if (fileCheck && typeof Worker !== 'undefined') {
             try {
                 if (progressTimerRef.current) {
                     window.clearInterval(progressTimerRef.current);
@@ -204,8 +250,8 @@ export default function ImageMode({ imageConverter }: Props) {
                     }
                 };
 
-                const arrayBuffer = await lastFile.arrayBuffer();
-                wk.postMessage({ type: 'convert', fileBuffer: arrayBuffer, fileType: lastFile.type, targetType: imageConverter.to.toLowerCase(), quality }, [arrayBuffer]);
+                const arrayBuffer = await fileCheck.arrayBuffer();
+                wk.postMessage({ type: 'convert', fileBuffer: arrayBuffer, fileType: fileCheck.type, targetType: imageConverter.to.toLowerCase(), quality }, [arrayBuffer]);
                 return;
             } catch (err) {
                 console.warn('Worker conversion failed, falling back:', err);
@@ -275,6 +321,23 @@ export default function ImageMode({ imageConverter }: Props) {
             setShowToast(true);
         }
     }, [a11yMessage, errorMessage]);
+
+    // when a new image is loaded, remember original dimensions and initialize resize fields
+    useEffect(() => {
+        if (!srcDataUrl) return;
+        let mounted = true;
+        const img = new Image();
+        img.src = srcDataUrl;
+        img.onload = () => {
+            if (!mounted) return;
+            setOriginalWidth(img.naturalWidth);
+            setOriginalHeight(img.naturalHeight);
+            // initialize resize fields if not set
+            setResizeWidth((w) => w ?? img.naturalWidth);
+            setResizeHeight((h) => h ?? img.naturalHeight);
+        };
+        return () => { mounted = false; };
+    }, [srcDataUrl]);
 
     useEffect(() => {
         return () => {
@@ -426,6 +489,81 @@ export default function ImageMode({ imageConverter }: Props) {
                         <label className="text-sm block">Quality: <span className="ml-1 font-medium">{Math.round(quality * 100)}%</span></label>
                         <input type="range" min={0.5} max={1} step={0.01} value={quality} onChange={(e) => setQuality(Number(e.target.value))} className="w-full mt-2" />
                         <div className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">Output: {imageConverter?.to}</div>
+
+                        <div className="mt-4">
+                            <div className="text-sm font-medium">Resize</div>
+                            <div className="mt-2 grid grid-cols-2 gap-2">
+                                <div>
+                                    <label className="text-xs block">Width</label>
+                                    <input
+                                        type="number"
+                                        min={1}
+                                        value={resizeWidth ?? ''}
+                                        onChange={(e) => {
+                                            const v = Math.max(0, Number(e.target.value) || 0);
+                                            setResizeWidth(v || null);
+                                            if (keepAspect && originalWidth && originalHeight && v) {
+                                                const newH = Math.round((v / originalWidth) * originalHeight);
+                                                setResizeHeight(newH);
+                                            }
+                                        }}
+                                        className="w-full mt-1 rounded-md border px-2 py-1 text-sm"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-xs block">Height</label>
+                                    <input
+                                        type="number"
+                                        min={1}
+                                        value={resizeHeight ?? ''}
+                                        onChange={(e) => {
+                                            const v = Math.max(0, Number(e.target.value) || 0);
+                                            setResizeHeight(v || null);
+                                            if (keepAspect && originalWidth && originalHeight && v) {
+                                                const newW = Math.round((v / originalHeight) * originalWidth);
+                                                setResizeWidth(newW);
+                                            }
+                                        }}
+                                        className="w-full mt-1 rounded-md border px-2 py-1 text-sm"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-2 flex items-center gap-2">
+                                <label className="flex items-center gap-2 text-sm">
+                                    <input type="checkbox" checked={keepAspect} onChange={(e) => setKeepAspect(e.target.checked)} className="h-4 w-4" />
+                                    Preserve aspect ratio
+                                </label>
+                            </div>
+
+                            <div className="mt-3 text-sm flex flex-wrap gap-2">
+                                <button type="button" onClick={() => {
+                                    if (originalWidth && originalHeight) {
+                                        setResizeWidth(Math.round(originalWidth * 0.5));
+                                        setResizeHeight(Math.round(originalHeight * 0.5));
+                                    }
+                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">50%</button>
+                                <button type="button" onClick={() => {
+                                    if (originalWidth && originalHeight) {
+                                        setResizeWidth(Math.round(originalWidth * 0.75));
+                                        setResizeHeight(Math.round(originalHeight * 0.75));
+                                    }
+                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">75%</button>
+                                <button type="button" onClick={() => {
+                                    if (originalWidth && originalHeight) {
+                                        setResizeWidth(originalWidth); setResizeHeight(originalHeight);
+                                    }
+                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">Original</button>
+                                <button type="button" onClick={() => {
+                                    if (originalWidth && originalHeight) {
+                                        setResizeWidth(Math.round(originalWidth * 2));
+                                        setResizeHeight(Math.round(originalHeight * 2));
+                                    }
+                                }} className="px-2 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-sm">200%</button>
+                            </div>
+
+                            <div className="mt-2 text-xs text-zinc-500">{originalWidth ? `Original: ${originalWidth}×${originalHeight}` : 'Original dimensions unknown'}</div>
+                        </div>
                     </aside>
                 </div>
             )}
