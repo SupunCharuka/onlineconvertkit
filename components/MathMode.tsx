@@ -75,7 +75,7 @@ export default function MathMode() {
 
     return (
         <div className="space-y-6">
-            <div className="rounded-2xl border bg-gradient-to-b from-white/80 to-white/60 dark:from-zinc-900/60 dark:to-zinc-900/40 p-6 shadow-2xl backdrop-blur-sm transition-shadow">
+            <div className="rounded-2xl  bg-gradient-to-b from-white/80 to-white/60 dark:from-zinc-900/60 dark:to-zinc-900/40 p-6 shadow-2xl backdrop-blur-sm transition-shadow">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex items-center gap-4">
                         <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-indigo-600 to-pink-500 flex items-center justify-center text-white shadow-lg transform-gpu">ƒ</div>

@@ -1,10 +1,38 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
     const [open, setOpen] = useState(false);
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem('theme');
+            const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initial = (stored === 'light' || stored === 'dark') ? (stored as 'light' | 'dark') : (prefersDark ? 'dark' : 'light');
+            setTheme(initial);
+            applyTheme(initial);
+        } catch (e) {
+            // ignore
+        }
+    }, []);
+
+    function applyTheme(t: 'light' | 'dark') {
+        const root = document.documentElement;
+        if (t === 'dark') root.classList.add('dark');
+        else root.classList.remove('dark');
+    }
+
+    function toggleTheme() {
+        const next = theme === 'dark' ? 'light' : 'dark';
+        try {
+            localStorage.setItem('theme', next);
+        } catch (e) {}
+        setTheme(next);
+        applyTheme(next);
+    }
     return (
         <header className="sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800 bg-white/60 dark:bg-black/50 backdrop-blur-lg">
             <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
@@ -30,7 +58,14 @@ export default function Header() {
 
                 <div className="ml-auto hidden md:flex items-center gap-3">
                     <Link href="/math" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-4 py-2 text-sm font-semibold shadow hover:scale-[1.02] transition-transform">Try Math</Link>
-                    <button aria-label="Toggle theme" className="p-2 rounded-md bg-white/80 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700">🌗</button>
+                    <button
+                        aria-label="Toggle theme"
+                        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                        aria-pressed={theme === 'dark'}
+                        onClick={toggleTheme}
+                        className="p-2 rounded-md bg-white/80 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700 hover:scale-105 transition">
+                        {theme === 'dark' ? '🌙' : '☀️'}
+                    </button>
                 </div>
 
                 <div className="md:hidden ml-auto">

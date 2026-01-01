@@ -16,7 +16,7 @@ export default function MathPage() {
           <p className="mt-3 max-w-2xl mx-auto text-sm text-zinc-600 dark:text-zinc-400">Evaluate numeric expressions and perform symbolic operations locally in your browser.</p>
         </header>
 
-        <section className="bg-white dark:bg-zinc-900 rounded-xl border p-6">
+        <section className="bg-white dark:bg-zinc-900 rounded-xl p-6">
           <ConverterClient mode="math" />
         </section>
       </div>
