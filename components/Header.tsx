@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
     const [open, setOpen] = useState(false);
@@ -61,9 +62,15 @@ export default function Header() {
 }
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+    const pathname = usePathname();
+    const isActive = href === '/' ? pathname === '/' : pathname?.startsWith(href ?? '');
+
     return (
-        <Link href={href} className="relative text-sm text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white">
-            <span className="after:block after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-indigo-500 after:to-pink-500 after:transition-all after:duration-300 hover:after:w-full">{children}</span>
+        <Link
+            href={href}
+            aria-current={isActive ? 'page' : undefined}
+            className={`relative text-sm ${isActive ? 'text-indigo-600 dark:text-indigo-300 font-semibold' : 'text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white'}`}>
+            <span className={`after:block after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-indigo-500 after:to-pink-500 after:transition-all after:duration-300 ${isActive ? 'after:w-full' : 'hover:after:w-full'}`}>{children}</span>
         </Link>
     );
 }

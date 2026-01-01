@@ -8,8 +8,8 @@ export default function Hero() {
       <div className="absolute right-6 top-0 w-48 h-48 bg-white/10 blur-2xl rounded-full mix-blend-overlay pointer-events-none" />
 
       <div className="max-w-4xl mx-auto relative z-10">
-        <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">All-in-one Converter</h1>
-        <p className="mt-4 text-lg text-white/90 max-w-2xl">Fast, private image and unit converters that run entirely in your browser — no logging, no accounts. Optimized for performance and SEO.</p>
+        <h1 className="text-4xl sm:text-5xl font-bold leading-tight"> All-in-One Converter – Free Online File, Image & Unit Tools</h1>
+        <p className="mt-4 text-lg text-white/90 max-w-2xl"> Convert files, images, and units instantly with our fast, secure all-in-one online converter. No signup, no uploads, and works directly in your browser.</p>
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Link href="/image-converter/png-to-jpg" className="inline-flex items-center gap-2 rounded-full bg-white text-indigo-700 px-5 py-2 font-semibold shadow hover:scale-[1.02] transition-transform">
@@ -24,11 +24,12 @@ export default function Hero() {
         </div>
 
         <div className="mt-8 text-sm text-white/80 flex flex-wrap gap-2">
-          <span className="mr-2 font-medium opacity-90">Built with:</span>
-          <span className="inline-block bg-white/10 px-2 py-0.5 rounded">Client-side Canvas</span>
-          <span className="inline-block bg-white/10 px-2 py-0.5 rounded ml-2">SSG pages</span>
-          <span className="inline-block bg-white/10 px-2 py-0.5 rounded ml-2">no logging</span>
+          <span className="mr-2 font-medium opacity-90">Popular tools:</span>
+          <span className="inline-block bg-white/10 px-2 py-0.5 rounded">PNG to JPG Converter</span>
+          <span className="inline-block bg-white/10 px-2 py-0.5 rounded ml-2">Image Converter</span>
+          <span className="inline-block bg-white/10 px-2 py-0.5 rounded ml-2">Unit Converter</span>
         </div>
+
       </div>
     </header>
   );

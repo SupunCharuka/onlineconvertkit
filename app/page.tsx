@@ -4,9 +4,30 @@ import { unitConverters } from "../data/unitConverters";
 import Hero from "../components/Hero";
 import ConverterCard from "../components/ConverterCard";
 
+export const metadata = {
+  title: 'Converter - Free Online File, Image ,Unit Converter & Math Tools',
+  description:
+    'Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.',
+  openGraph: {
+    title: 'Converter - Free Online File, Image ,Unit Converter & Math Tools',
+    description:
+      'Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.',
+    siteName: 'Converter',
+    type: 'website',
+    url: 'https://example.com/',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-black py-16 px-6">
+    <main className="min-h-screen bg-zinc-50 dark:bg-black py-16 px-6" aria-label="Converter home">
       <div className="mx-auto max-w-6xl relative">
         {/* decorative blob */}
         <div className="pointer-events-none hidden md:block absolute -right-20 -top-20 w-64 h-64 bg-gradient-to-br from-indigo-200 to-pink-200 opacity-40 blur-3xl rounded-full mix-blend-multiply dark:from-indigo-900 dark:to-pink-800 dark:opacity-20" />
@@ -14,7 +35,7 @@ export default function Home() {
         <Hero />
 
         <div className="mt-8 text-center max-w-2xl mx-auto">
-          <p className="text-zinc-600 dark:text-zinc-300">Quick, private converters that run entirely in your browser — image formats, units, and symbolic math. No logging, no tracking, just fast client-side tools.</p>
+          <p className="text-zinc-600 dark:text-zinc-300">Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.</p>
         </div>
 
         <section className="mt-12">
@@ -53,10 +74,42 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="mt-20 text-center">
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">Built with Next.js App Router — SEO-first, client-side converters, no logging.</div>
-          <div className="mt-4 text-xs text-zinc-400">Tip: open the Math converter for symbolic operations and step-by-step examples.</div>
-        </footer>
+       
+        {/* JSON-LD structured data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://example.com/#website',
+                  'url': 'https://example.com/',
+                  'name': 'Converter',
+                  'description': 'Converter - Free Online File, Image ,Unit Converter & Math Tools.',
+                },
+                {
+                  '@type': 'Organization',
+                  '@id': 'https://example.com/#org',
+                  'name': 'Converter',
+                  'url': 'https://example.com/',
+                },
+                {
+                  '@type': 'BreadcrumbList',
+                  'itemListElement': [
+                    {
+                      '@type': 'ListItem',
+                      'position': 1,
+                      'name': 'Home',
+                      'item': 'https://example.com/',
+                    },
+                  ],
+                },
+              ],
+            }),
+          }}
+        />
       </div>
     </main>
   );
