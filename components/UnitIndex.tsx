@@ -101,7 +101,7 @@ export default function UnitIndex() {
                         <h3 className="text-xl font-semibold mb-4">{cat}</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {grouped[cat].map((c) => (
-                                <Link key={c.slug} href={`/unit-converter/${c.slug}`} className="group block rounded-2xl p-4 relative overflow-hidden bg-gradient-to-b from-white/60 to-white/30 dark:from-black/50 dark:to-black/30 border border-zinc-100 dark:border-zinc-800 hover:shadow-2xl transition-transform transform-gpu hover:-translate-y-1 hover:scale-[1.01]">
+                                <Link key={c.slug} href={`/unit-converter/${c.slug}`} className="group block rounded-2xl p-4 relative overflow-hidden bg-gradient-to-b from-white/60 to-white/30 dark:from-black/50 dark:to-black/30 border border-zinc-100 dark:border-zinc-800 shadow-sm hover:shadow-2xl transition-transform transform-gpu hover:-translate-y-1 hover:scale-[1.01]">
                                     <div className="relative z-10 flex flex-col h-full">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">

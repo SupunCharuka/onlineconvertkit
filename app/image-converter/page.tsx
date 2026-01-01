@@ -13,7 +13,7 @@ export default function ImageIndexPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {imageConverters.map((c) => (
-            <Link key={c.slug} href={`/image-converter/${c.slug}`} className="group block rounded-2xl p-4 relative overflow-hidden bg-gradient-to-b from-white/60 to-white/30 dark:from-black/50 dark:to-black/30 border border-zinc-100 dark:border-zinc-800 hover:shadow-2xl transition-transform transform-gpu hover:-translate-y-1">
+            <Link key={c.slug} href={`/image-converter/${c.slug}`} className="group block rounded-2xl p-4 relative overflow-hidden bg-gradient-to-b from-white/60 to-white/30 dark:from-black/50 dark:to-black/30 border border-zinc-100 dark:border-zinc-800 shadow-sm hover:shadow-2xl transition-transform transform-gpu hover:-translate-y-1">
               <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-indigo-500/8 via-purple-400/6 to-pink-400/8" />
               <div className="relative z-10 flex flex-col h-full">
                 <div className="flex items-center justify-between">
