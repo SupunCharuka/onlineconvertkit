@@ -8,7 +8,11 @@ export const metadata = {
         title: 'Privacy Policy | OnlineConvertKit',
         description: 'Privacy policy — Converter is a privacy-first, client-side collection of converters. We do not collect or store your files or input.',
         url: 'https://onlineconvertkit.com/privacy',
-        siteName: 'OnlineConvertKit',
+            siteName: 'OnlineConvertKit',
+            images: [
+                { url: 'https://onlineconvertkit.com/og-1200x630.png', width: 1200, height: 630, alt: 'Privacy — OnlineConvertKit' },
+                { url: 'https://onlineconvertkit.com/og-600x600.png', width: 600, height: 600, alt: 'Privacy — OnlineConvertKit' },
+            ],
         type: 'website',
     },
     twitter: { card: 'summary' },

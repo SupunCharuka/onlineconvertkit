@@ -37,14 +37,9 @@ export default function Header() {
         <header className="sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800 bg-white/60 dark:bg-black/50 backdrop-blur-lg">
             <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
                 <Link href="/" className="flex items-center gap-3 shrink-0">
-                    <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-xl transform-gpu hover:scale-105 transition">
-                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-                            <path d="M12 3v10" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M5 12h14" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </div>
+                    <img src="/logo.svg" alt="OnlineConvertKit" className="w-11 h-11 rounded-lg shadow-xl object-cover" />
                     <div className="hidden sm:block">
-                        <div className="text-lg font-extrabold tracking-tight leading-none">Converter</div>
+                        <div className="text-lg font-extrabold tracking-tight leading-none">OnlineConvertKit</div>
                         <div className="text-xs text-zinc-500 dark:text-zinc-400 -mt-0.5">all-in-one</div>
                     </div>
                 </Link>

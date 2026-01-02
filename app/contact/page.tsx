@@ -9,6 +9,10 @@ export const metadata = {
     title: 'Contact | OnlineConvertKit',
     description: 'Contact the Converter project — client-side image, unit and math tools. Reach out for feedback or help.',
     url: 'https://onlineconvertkit.com/contact',
+    images: [
+      { url: 'https://onlineconvertkit.com/og-1200x630.png', width: 1200, height: 630, alt: 'Contact — OnlineConvertKit' },
+      { url: 'https://onlineconvertkit.com/og-600x600.png', width: 600, height: 600, alt: 'Contact — OnlineConvertKit' },
+    ],
     siteName: 'OnlineConvertKit',
     type: 'website',
   },

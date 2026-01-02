@@ -2,9 +2,18 @@ import React from "react";
 import ConverterClient from "../../components/ConverterClient";
 
 export const metadata = {
-  title: 'Free Online Math Converter | OnlineConvertKit',
+  title: 'OnlineConvertKit | Free Online Math Converter & Solver',
   description: 'A powerful online math converter and solver. Simplify algebraic expressions, calculate derivatives, integrals, and evaluate complex numeric formulas instantly.',
-  keywords: ['math converter', 'symbolic math solver', 'derivative calculator', 'integral solver', 'simplify expressions online']
+  keywords: ['math converter', 'symbolic math solver', 'derivative calculator', 'integral solver', 'simplify expressions online'],
+  openGraph: {
+    title: 'Math Converter | OnlineConvertKit',
+    description: 'A powerful online math converter and solver. Simplify algebraic expressions, calculate derivatives, integrals, and evaluate complex numeric formulas instantly.',
+    url: 'https://onlineconvertkit.com/math',
+    images: [
+      { url: 'https://onlineconvertkit.com/og-1200x630.png', width: 1200, height: 630, alt: 'Math Converter' },
+      { url: 'https://onlineconvertkit.com/og-600x600.png', width: 600, height: 600, alt: 'Math Converter' },
+    ],
+  },
 };
 
 export default function MathPage() {

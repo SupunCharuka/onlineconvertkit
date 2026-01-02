@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: Params | Promise<Params
         </nav>
 
         <header className="mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-50">{converter.name}</h1>
+          <h1 className="text-3xl sm:text-4xl font-semibold text-zinc-900 dark:text-zinc-50">{converter.name}</h1>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{converter.description}</p>
         </header>
 

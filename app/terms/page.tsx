@@ -8,6 +8,10 @@ export const metadata = {
     title: 'Terms of Use | OnlineConvertKit',
     description: 'Terms of use for Converter — client-side image, unit and math tools. Read usage, disclaimers, and liability limits.',
     url: 'https://onlineconvertkit.com/terms',
+    images: [
+      { url: 'https://onlineconvertkit.com/og-1200x630.png', width: 1200, height: 630, alt: 'Terms — OnlineConvertKit' },
+      { url: 'https://onlineconvertkit.com/og-600x600.png', width: 600, height: 600, alt: 'Terms — OnlineConvertKit' },
+    ],
     siteName: 'OnlineConvertKit',
     type: 'website',
   },

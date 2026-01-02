@@ -23,10 +23,15 @@ export function buildConverterMetadata(converter: AnyConverter, url?: string): M
       title,
       description,
       url: url,
+      images: [
+        { url: 'https://onlineconvertkit.com/og-1200x630.png', width: 1200, height: 630, alt: converter.name },
+        { url: 'https://onlineconvertkit.com/og-600x600.png', width: 600, height: 600, alt: converter.name },
+      ],
     },
     twitter: {
       title,
       description,
+      images: ['https://onlineconvertkit.com/og-1200x630.png'],
     },
   };
 

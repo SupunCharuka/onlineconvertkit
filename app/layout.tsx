@@ -29,12 +29,20 @@ export const metadata: Metadata = {
     "convert units",
     "onlineconvertkit",
   ],
+  icons: {
+    icon: '/logo.svg',
+    apple: '/logo.svg',
+  },
   openGraph: {
     title: "Free Online File, Image & Unit Converter | OnlineConvertKit",
     description: "Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.",
     siteName: "OnlineConvertKit",
     type: "website",
     url: "https://onlineconvertkit.com/",
+    images: [
+      { url: "https://onlineconvertkit.com/og-1200x630.png", alt: "OnlineConvertKit" , width: 1200, height: 630},
+      { url: "https://onlineconvertkit.com/og-600x600.png", alt: "OnlineConvertKit", width: 600, height: 600 },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -74,6 +82,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
                   '@id': 'https://onlineconvertkit.com/#org',
                   'name': 'OnlineConvertKit',
                   'url': 'https://onlineconvertkit.com/',
+                  'logo': 'https://onlineconvertkit.com/logo.svg',
                 },
               ],
             }),
