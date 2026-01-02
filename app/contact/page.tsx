@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-black dark:to-zinc-900 py-16 px-6">
+    <main className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-black dark:to-zinc-900 py-12 px-6">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 dark:text-zinc-50">Get in touch</h1>

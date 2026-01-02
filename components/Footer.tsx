@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Footer() {
     return (
@@ -18,12 +19,12 @@ export default function Footer() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start w-full md:w-auto">
-                    <a href="/" className="px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Privacy</a>
-                    <a href="/" className="px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Terms</a>
-                    <a href="#" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
+                    <Link href="/privacy" className="px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Privacy</Link>
+                    <Link href="/terms" className="px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300">Terms</Link>
+                    <Link href="#" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
                         <svg className="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M12 21s-6-4.35-9-7.18C-1 9.27 3 3.5 9 6c0 0 1-1 3-1s3 1 3 1c6-2.5 10 3.27 6 7.82C18 16.65 12 21 12 21z" /></svg>
                         <span className="text-xs">Made with care</span>
-                    </a>
+                    </Link>
                 </div>
 
                
