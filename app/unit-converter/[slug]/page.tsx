@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params | Promise<Pa
   if (!slug) return ({ title: "Converter not found" } as Metadata);
   const converter = unitConverterBySlug[slug];
   if (!converter) return ({ title: "Converter not found" } as Metadata);
-  const url = `https://example.com/unit-converter/${slug}`;
+  const url = `https://onlineconvertkit.com/unit-converter/${slug}`;
   return buildConverterMetadata(converter, url);
 }
 
@@ -116,8 +116,8 @@ export default async function Page({ params }: { params: Params | Promise<Params
           </aside>
         </div>
 
-        <FAQJsonLd faqs={faqs} url={`https://example.com/unit-converter/${converter.slug}`} name={converter.name} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateConverterJsonLd(converter, `https://example.com/unit-converter/${converter.slug}`)) }} />
+        <FAQJsonLd faqs={faqs} url={`https://onlineconvertkit.com/unit-converter/${converter.slug}`} name={converter.name} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateConverterJsonLd(converter, `https://onlineconvertkit.com/unit-converter/${converter.slug}`)) }} />
       </div>
     </main>
   );

@@ -14,7 +14,7 @@ export const metadata = {
       'Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.',
     siteName: 'Converter',
     type: 'website',
-    url: 'https://example.com/',
+    url: 'https://onlineconvertkit.com/',
   },
   twitter: {
     card: 'summary_large_image',
@@ -84,16 +84,16 @@ export default function Home() {
               '@graph': [
                 {
                   '@type': 'WebSite',
-                  '@id': 'https://example.com/#website',
-                  'url': 'https://example.com/',
+                  '@id': 'https://onlineconvertkit.com/#website',
+                  'url': 'https://onlineconvertkit.com/',
                   'name': 'Converter',
                   'description': 'Converter - Free Online File, Image ,Unit Converter & Math Tools.',
                 },
                 {
                   '@type': 'Organization',
-                  '@id': 'https://example.com/#org',
+                  '@id': 'https://onlineconvertkit.com/#org',
                   'name': 'Converter',
-                  'url': 'https://example.com/',
+                  'url': 'https://onlineconvertkit.com/',
                 },
                 {
                   '@type': 'BreadcrumbList',
@@ -102,7 +102,7 @@ export default function Home() {
                       '@type': 'ListItem',
                       'position': 1,
                       'name': 'Home',
-                      'item': 'https://example.com/',
+                      'item': 'https://onlineconvertkit.com/',
                     },
                   ],
                 },
