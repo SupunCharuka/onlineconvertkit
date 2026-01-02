@@ -2,7 +2,7 @@ import React from "react";
 import ConverterClient from "../../components/ConverterClient";
 
 export const metadata = {
-  title: 'OnlineConvertKit | Free Online Math Converter & Solver',
+  title: 'Math Converter | OnlineConvertKit',
   description: 'A powerful online math converter and solver. Simplify algebraic expressions, calculate derivatives, integrals, and evaluate complex numeric formulas instantly.',
   keywords: ['math converter', 'symbolic math solver', 'derivative calculator', 'integral solver', 'simplify expressions online'],
   openGraph: {

@@ -20,7 +20,7 @@ export const metadata = {
 
 export default function PrivacyPage() {
     return (
-        <main className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-black dark:to-zinc-900 py-12 px-6">
+        <main className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-6">
             <div className="mx-auto max-w-5xl relative">
                 {/* decorative blob */}
                 <div className="pointer-events-none absolute -right-16 -top-16 w-72 h-72 bg-gradient-to-br from-indigo-200 to-pink-200 opacity-30 blur-3xl rounded-full mix-blend-multiply dark:from-indigo-900 dark:to-pink-800 dark:opacity-20" />
