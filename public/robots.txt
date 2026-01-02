@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://onlineconvertkit.com/sitemap.xml
+Host: https://onlineconvertkit.com

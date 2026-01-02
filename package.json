@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sitemap": "node scripts/generate-sitemap.cjs",
+    "robots": "node scripts/generate-robots.cjs"
   },
   "dependencies": {
     "algebrite": "^1.4.0",
