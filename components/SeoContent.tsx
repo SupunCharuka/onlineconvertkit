@@ -10,32 +10,41 @@ function wordCount(text: string) {
 
 // Generate an SEO-friendly article of ~900 words based on converter metadata.
 export function generateLongSeoContent(converter: AnyConverter) {
-  const base = `${converter.name} — Convert ${converter.from} to ${converter.to} quickly and privately in your browser. `;
+  const base = `${converter.name} is a free online tool that allows you to convert ${converter.from} to ${converter.to} directly in your browser.`;
   const paragraphs: string[] = [];
 
   // Intro paragraph
   paragraphs.push(
-    `${base}This tool runs entirely client-side which means your files and inputs never leave your device. Use ${converter.name} to get fast results, preserve quality, and optimize output for web or sharing.`
+    `${base}The conversion runs entirely client-side, meaning your files and data never leave your device. This makes the tool fast, private,
+    and ideal for everyday conversion tasks without installing software.`
   );
 
-  // Feature paragraph
+  // Why choose this converter paragraph
   paragraphs.push(
-    `Why choose ${converter.name}? It combines speed, privacy, and quality. The conversion happens using efficient browser APIs so results are immediate and suitable for production use cases such as preparing images for responsive sites or converting measurements for engineering and design.`
+    `Why choose ${converter.name}? This converter is designed for speed, accuracy, and simplicity. Whether you are a developer, designer, student, or casual user,
+    ${converter.name} helps you convert ${converter.from} to ${converter.to} in seconds. No sign-up, no tracking, and no file uploads
+    are required, making it a secure choice for sensitive content. The intuitive interface allows you to drag & drop files, enter values, and get instant results with just a few clicks.`
   );
 
   // How it works paragraph
   paragraphs.push(
-    `How it works: ${converter.name} uses in-browser processing to transform ${converter.from} to ${converter.to}. For image conversions we leverage Canvas APIs to read pixel data and encode the target format. For unit conversions we perform precise arithmetic using proven formulas so you get consistent values.`
+    `How it works: The conversion process happens directly in your browser using modern web technologies.
+    Image conversions rely on optimized Canvas APIs to preserve quality while changing formats.
+    Unit conversions use precise mathematical formulas to ensure accurate and consistent results.`
   );
 
   // Use-cases paragraph
   paragraphs.push(
-    `Use cases include optimizing images for faster page loads, creating thumbnails, converting assets before uploading to CMS, or doing quick unit calculations while designing or prototyping. ${converter.name} is particularly useful when you need a quick, reliable conversion without installing software.`
+    `Common Use Cases: ${converter.name} is commonly used for optimizing images for faster websites, preparing assets for social media,
+    converting measurements during engineering or design work, and quickly transforming files before uploading them to a CMS.
+    It is especially useful when you need instant results without relying on external software.`
   );
 
   // Privacy and performance paragraph
   paragraphs.push(
-    `Privacy & performance: processing occurs locally so sensitive images or measurement data stay on your machine. The app is optimized to minimize memory usage and to provide snappy interactions for single files or small batches. For large files, the behavior depends on the device capabilities and browser limits.`
+    `Privacy & performance: All conversions are processed locally on your device. This means your files remain private and are never sent to a server.
+    The tool is optimized for performance and works smoothly on modern browsers. For larger files, performance depends on your device
+    and available memory.`
   );
 
   // Tips paragraph
@@ -55,12 +64,15 @@ export function generateLongSeoContent(converter: AnyConverter) {
 
   // Best practices paragraph
   paragraphs.push(
-    `Best practices: keep originals backed up, preview results before replacing assets on production sites, and prefer modern formats where supported to improve performance. This converter helps you experiment quickly and integrate results into your workflow.`
+    `Best practices: Always keep a backup of your original files before converting. Preview the output to ensure quality meets your needs.
+    When working with images, choose the format that balances quality and file size. For unit conversions, avoid rounding values
+    too early to maintain precision.`
   );
 
   // Closing paragraph with unique phrasing per converter
   paragraphs.push(
-    `Start using ${converter.name} now — it's free, works offline, and provides immediate, reliable conversions. Whether you're optimizing images for SEO or converting measurements while prototyping, ${converter.name} streamlines the task with a simple, private interface.`
+    `${converter.name} is a fast, free, and reliable way to convert ${converter.from} to ${converter.to} online.
+    It works entirely in your browser, respects your privacy, and delivers immediate results. Whether for professional workflows or casual use, this tool is a valuable addition to your digital toolkit. Try it out today and experience hassle-free conversions!`
   );
 
   // Ensure we reach roughly 800-1000 words by expanding variations
@@ -69,7 +81,7 @@ export function generateLongSeoContent(converter: AnyConverter) {
   const variants = [
     `The converter is built to handle everyday workflows and can be used as part of a content production process.`,
     `Because it runs locally it is fast and responsive.`,
-    `No sign-up, no logging — just instant conversion in your browser.`,
+    `No sign-up, no tracking — just instant conversion in your browser.`,
     `Ideal for web professionals and casual users alike.`,
   ];
 
@@ -89,7 +101,7 @@ export function generateLongSeoContent(converter: AnyConverter) {
 }
 
 export function generateMetaDescription(converter: AnyConverter) {
-  return `${converter.name} — Convert ${converter.from} to ${converter.to} instantly in your browser. Fast, private, no logging.`;
+  return `Free ${converter.name} to convert ${converter.from} to ${converter.to} online. Fast, private, and works directly in your browser.`;
 }
 
 export default function SeoContent({ converter }: { converter: AnyConverter }) {
@@ -117,9 +129,9 @@ export default function SeoContent({ converter }: { converter: AnyConverter }) {
       <div className="mt-6 rounded-lg p-4 bg-white/60 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800 shadow-sm">
         <h5 className="font-semibold">Quick Tips</h5>
         <ul className="mt-2 list-disc ml-6 text-sm text-zinc-700 dark:text-zinc-300">
-          <li>Preview results before replacing assets on production sites.</li>
-          <li>Keep originals backed up; convert copies when experimenting.</li>
-          <li>Prefer modern formats (WebP/AVIF) where supported to improve performance.</li>
+          <li>Preview converted results before using them in production.</li>
+          <li>Keep original files backed up.</li>
+          <li>Use modern formats where supported for better performance.</li>
         </ul>
       </div>
     </article>
