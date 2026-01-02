@@ -54,6 +54,7 @@ export default function Header() {
                     <NavLink href="/image-converter">Images</NavLink>
                     <NavLink href="/unit-converter">Units</NavLink>
                     <NavLink href="/math">Math</NavLink>
+                    <NavLink href="/contact">Contact</NavLink>
                 </nav>
 
                 <div className="ml-auto hidden md:flex items-center gap-3">
@@ -96,6 +97,7 @@ export default function Header() {
                             <li><Link href="/image-converter" onClick={() => setOpen(false)} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">Images</Link></li>
                             <li><Link href="/unit-converter/meters-to-feet" onClick={() => setOpen(false)} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">Units</Link></li>
                             <li><Link href="/math" onClick={() => setOpen(false)} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">Math</Link></li>
+                            <li><Link href="/contact" onClick={() => setOpen(false)} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">Contact</Link></li>
                             <li className="mt-2"><Link href="/math" onClick={() => setOpen(false)} className="block text-center rounded-full bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-4 py-2">Try Math</Link></li>
                             <li className="mt-2 flex justify-center">
                                 <button
