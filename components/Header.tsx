@@ -39,9 +39,8 @@ export default function Header() {
                 <Link href="/" className="flex items-center gap-3 shrink-0">
                     <img src="/logo.svg" alt="OnlineConvertKit" className="w-11 h-11 rounded-lg shadow-xl object-cover" />
                     <div className="hidden sm:block">
-                        <div className="text-lg font-extrabold tracking-tight leading-none">OnlineConvertKit</div>
-                        <div className="text-xs text-zinc-500 dark:text-zinc-400 -mt-0.5">all-in-one</div>
-                    </div>
+                        <div className="text-lg font-bold tracking-tight leading-none">OnlineConvertKit</div>
+                         </div>
                 </Link>
 
                 <nav aria-label="Primary" className="hidden md:flex items-center gap-6 mx-auto">
