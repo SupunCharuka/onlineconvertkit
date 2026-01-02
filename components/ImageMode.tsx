@@ -411,7 +411,22 @@ export default function ImageMode({ imageConverter }: Props) {
                         <path d="M8 7l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">Drag & drop an image here, or click to select</div>
-                    <div className="mt-1 text-xs text-zinc-400">Supported: PNG, JPG, WEBP</div>
+                    <div className="mt-1 flex items-center justify-center gap-3">
+                        
+                        <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
+                            aria-label="Choose file to upload"
+                            className="inline-flex items-center gap-2 text-sm px-3 py-1 rounded-lg backdrop-blur-sm bg-gradient-to-r from-white/30 via-indigo-50/30 to-white/20 dark:from-indigo-900/30 dark:via-indigo-800/20 dark:to-indigo-900/20 border border-white/10 dark:border-zinc-700 text-indigo-700 dark:text-indigo-100 shadow-sm hover:scale-[1.03] transform transition focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
+                        >
+                            <svg className="h-4 w-4 -ml-0.5" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                <path d="M12 3v10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M8 7l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M21 21H3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            <span className="font-medium">Choose file</span>
+                        </button>
+                    </div>
                     {uploadProgress > 0 && (
                         <div className="absolute left-4 right-4 bottom-[-14px]">
                             <div className="h-2 rounded-full overflow-hidden shadow-sm">
