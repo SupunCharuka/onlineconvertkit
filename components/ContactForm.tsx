@@ -7,16 +7,11 @@ export default function ContactForm() {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<null | "sent" | "copied" | "error">(null);
+  const [sending, setSending] = useState(false);
+  const FORM_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "https://formspree.io/f/mdakgngy";
 
   function validEmail(e: string) {
     return /\S+@\S+\.\S+/.test(e);
-  }
-
-  function buildMailto() {
-    const to = "supuncharuka.dev@gmail.com"; // replace with your support address
-    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
-    const params = new URLSearchParams({ subject: subject || "Contact from website", body });
-    return `mailto:${to}?${params.toString()}`;
   }
 
   async function handleSend(e?: React.FormEvent) {
@@ -30,13 +25,37 @@ export default function ContactForm() {
       return;
     }
 
+    // Prevent sending if the endpoint is not configured
+    if (FORM_ENDPOINT.includes("your_form_id")) {
+      setStatus("error");
+      console.error("Formspree endpoint not configured. Set NEXT_PUBLIC_FORMSPREE_ENDPOINT in your environment.");
+      return;
+    }
+
+    setSending(true);
+    setStatus(null);
     try {
-      const mailto = buildMailto();
-      // attempt to open user's mail client
-      window.location.href = mailto;
-      setStatus("sent");
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ name, email, subject, message }),
+      });
+
+      if (res.ok) {
+        setStatus("sent");
+        setName("");
+        setEmail("");
+        setSubject("");
+        setMessage("");
+      } else {
+        setStatus("error");
+        console.error("Formspree error", await res.text());
+      }
     } catch (err) {
       setStatus("error");
+      console.error(err);
+    } finally {
+      setSending(false);
     }
   }
 
@@ -86,9 +105,10 @@ export default function ContactForm() {
             <button type="submit" className="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-semibold shadow-lg">Send via Email</button>
            
             <div className="ml-auto text-sm text-zinc-500 dark:text-zinc-400">
-              {status === 'sent' && <span className="text-green-600">Sent Successfully.</span>}
+              {sending && <span className="text-zinc-600">Sending…</span>}
+              {status === 'sent' && <span className="text-green-600">Message sent — thank you.</span>}
               {status === 'copied' && <span className="text-indigo-600">Message copied to clipboard.</span>}
-              {status === 'error' && <span className="text-red-600">Please complete the form correctly.</span>}
+              {status === 'error' && <span className="text-red-600">Error sending message. Configure Formspree or try copy.</span>}
             </div>
           </div>
         </div>
