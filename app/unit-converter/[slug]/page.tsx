@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { unitConverters, unitConverterBySlug, allUnitSlugs } from "../../../data/unitConverters";
 import SeoContent, { generateMetaDescription } from "../../../components/SeoContent";
+import buildConverterMetadata, { generateConverterJsonLd } from "../../../lib/seo";
 import FAQ, { FAQJsonLd } from "../../../components/FAQ";
 import ConverterClient from "../../../components/ConverterClient";
 
@@ -18,13 +19,8 @@ export async function generateMetadata({ params }: { params: Params | Promise<Pa
   if (!slug) return ({ title: "Converter not found" } as Metadata);
   const converter = unitConverterBySlug[slug];
   if (!converter) return ({ title: "Converter not found" } as Metadata);
-  const title = `${converter.name} — ${converter.from} to ${converter.to}`;
-  const description = generateMetaDescription(converter);
-  return {
-    title,
-    description,
-    openGraph: { title, description },
-  };
+  const url = `https://example.com/unit-converter/${slug}`;
+  return buildConverterMetadata(converter, url);
 }
 
 export default async function Page({ params }: { params: Params | Promise<Params> }) {
@@ -121,6 +117,7 @@ export default async function Page({ params }: { params: Params | Promise<Params
         </div>
 
         <FAQJsonLd faqs={faqs} url={`https://example.com/unit-converter/${converter.slug}`} name={converter.name} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateConverterJsonLd(converter, `https://example.com/unit-converter/${converter.slug}`)) }} />
       </div>
     </main>
   );

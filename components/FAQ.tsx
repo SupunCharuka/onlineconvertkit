@@ -19,7 +19,7 @@ export function FAQJsonLd({ faqs, url, name }: { faqs: FAQItem[]; url: string; n
     "@type": "SoftwareApplication",
     name,
     url,
-    description: `${name} - client-side converter`,
+    description: `${name} - free, online & fast converter`,
   };
 
   return (
