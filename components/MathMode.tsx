@@ -75,7 +75,7 @@ export default function MathMode() {
 
     return (
         <div className="space-y-6">
-            <div className="rounded-2xl  bg-gradient-to-b from-white/80 to-white/60 dark:from-zinc-900/60 dark:to-zinc-900/40 p-6 shadow-2xl backdrop-blur-sm transition-shadow">
+            <div className="rounded-2xl  bg-gradient-to-b from-white/80 to-white/60 dark:from-zinc-900/60 dark:to-zinc-900/40 p-6 shadow-sm backdrop-blur-sm transition-shadow">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex items-center gap-4">
                         <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-indigo-600 to-pink-500 flex items-center justify-center text-white shadow-lg transform-gpu">ƒ</div>
@@ -110,7 +110,7 @@ export default function MathMode() {
                     </div>
 
                     {showHelp && (
-                        <div className="mt-4 rounded-md border p-3 bg-white/60 dark:bg-zinc-900/60 text-sm text-zinc-700 dark:text-zinc-300">
+                        <div className="mt-4 rounded-md p-3 bg-white/60 dark:bg-zinc-900/60 text-sm text-zinc-700 dark:text-zinc-300 shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800">
                             <div className="font-medium mb-2">Quick syntax guide</div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                                 <div>
@@ -184,13 +184,13 @@ export default function MathMode() {
                                             <button disabled={!result} onClick={copyResult} className="cursor-pointer px-3 py-1 rounded-md border text-sm">Copy</button>
                                         </div>
                                     </div>
-                                    <div className="mt-3">
-                                        <pre className="rounded-xl min-h-[5rem] border bg-gradient-to-r from-white/80 to-white/70 dark:from-zinc-900/60 dark:to-zinc-800 p-4 text-sm whitespace-pre-wrap font-mono shadow-inner">{result || '—'}</pre>
-                                    </div>
+                                            <div className="mt-3">
+                                                <pre className="rounded-xl min-h-[5rem] bg-gradient-to-r from-white/80 to-white/70 dark:from-zinc-900/60 dark:to-zinc-800 p-4 text-sm whitespace-pre-wrap font-mono shadow-inner ring-1 ring-zinc-100 dark:ring-zinc-800">{result || '—'}</pre>
+                                            </div>
                             </div>
                         </div>
 
-                        <aside className="rounded-lg border p-3 bg-white/60 dark:bg-zinc-900/60">
+                        <aside className="rounded-lg p-3 bg-white/60 dark:bg-zinc-900/60 shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800">
                             <div className="text-sm font-medium">Examples</div>
                             <div className="mt-2 flex flex-col gap-2">
                                 {['2+2', 'sin(pi/4)', 'x^2 + 2*x + 1', 'integrate(x^2, x)', 'diff(x^3, x)'].map((ex) => (
@@ -205,7 +205,7 @@ export default function MathMode() {
             {history.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {history.map((h, i) => (
-                        <div key={i} className="rounded-lg border p-3 bg-white/60 dark:bg-zinc-900/60">
+                        <div key={i} className="rounded-lg p-3 bg-white/60 dark:bg-zinc-900/60 shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800">
                             <div className="text-xs text-zinc-500">{h.expr}</div>
                             <div className="mt-2 font-mono text-sm text-zinc-700 dark:text-zinc-200">{h.result}</div>
                         </div>

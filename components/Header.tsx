@@ -68,7 +68,16 @@ export default function Header() {
                     </button>
                 </div>
 
-                <div className="md:hidden ml-auto">
+                <div className="md:hidden ml-auto flex items-center gap-2">
+                    <button
+                        aria-label="Toggle theme"
+                        title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                        aria-pressed={theme === 'dark'}
+                        onClick={toggleTheme}
+                        className="p-2 rounded-md bg-white/80 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-700 shadow-sm">
+                        {theme === 'dark' ? '🌙' : '☀️'}
+                    </button>
+
                     <button aria-expanded={open} aria-label="Open menu" onClick={() => setOpen((v) => !v)} className="p-2 rounded-md bg-white/70 dark:bg-black/30 shadow-sm">
                         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             {open ? (
@@ -88,6 +97,13 @@ export default function Header() {
                             <li><Link href="/unit-converter/meters-to-feet" onClick={() => setOpen(false)} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">Units</Link></li>
                             <li><Link href="/math" onClick={() => setOpen(false)} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">Math</Link></li>
                             <li className="mt-2"><Link href="/math" onClick={() => setOpen(false)} className="block text-center rounded-full bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-4 py-2">Try Math</Link></li>
+                            <li className="mt-2 flex justify-center">
+                                <button
+                                    onClick={() => { toggleTheme(); setOpen(false); }}
+                                    className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-zinc-800 text-sm px-4 py-2">
+                                    {theme === 'dark' ? '🌙 Dark' : '☀️ Light'}
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 )}
