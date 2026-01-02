@@ -5,14 +5,26 @@ import Hero from "../components/Hero";
 import ConverterCard from "../components/ConverterCard";
 
 export const metadata = {
-  title: 'Converter - Free Online File, Image ,Unit Converter & Math Tools',
+  title: 'Free Online File, Image & Unit Converter | OnlineConvertKit',
   description:
     'Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.',
+  keywords: [
+    'online converter',
+    'free converter',
+    'file converter',
+    'image converter',
+    'unit converter',
+    'math converter',
+    'convert online',
+    'convert images',
+    'convert units',
+    'onlineconvertkit',
+  ],
   openGraph: {
-    title: 'Converter - Free Online File, Image ,Unit Converter & Math Tools',
+    title: 'Free Online File, Image & Unit Converter | OnlineConvertKit',
     description:
       'Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.',
-    siteName: 'Converter',
+    siteName: 'OnlineConvertKit',
     type: 'website',
     url: 'https://onlineconvertkit.com/',
   },
@@ -35,7 +47,7 @@ export default function Home() {
         <Hero />
 
         <div className="mt-8 text-center max-w-2xl mx-auto">
-          <p className="text-zinc-600 dark:text-zinc-300">Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.</p>
+          <p className="text-zinc-600 dark:text-zinc-300">The ultimate all-in-one toolkit to convert images, math expressions, and units. 100% secure, browser-based, and fast. No file uploads to servers required.</p>
         </div>
 
         <section className="mt-12">
@@ -74,7 +86,7 @@ export default function Home() {
           </div>
         </section>
 
-       
+
         {/* JSON-LD structured data for SEO */}
         <script
           type="application/ld+json"
@@ -86,13 +98,13 @@ export default function Home() {
                   '@type': 'WebSite',
                   '@id': 'https://onlineconvertkit.com/#website',
                   'url': 'https://onlineconvertkit.com/',
-                  'name': 'Converter',
-                  'description': 'Converter - Free Online File, Image ,Unit Converter & Math Tools.',
+                  'name': 'OnlineConvertKit',
+                  'description': 'Free all-in-one online converter to convert files, images, videos & units instantly. Fast, secure, and works directly in your browser.',
                 },
                 {
                   '@type': 'Organization',
                   '@id': 'https://onlineconvertkit.com/#org',
-                  'name': 'Converter',
+                  'name': 'OnlineConvertKit',
                   'url': 'https://onlineconvertkit.com/',
                 },
                 {

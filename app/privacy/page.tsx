@@ -1,8 +1,17 @@
 import Link from "next/link";
 
 export const metadata = {
-    title: 'Privacy — Converter',
+    title: 'Privacy Policy | OnlineConvertKit',
     description: 'Privacy policy — Converter is a privacy-first, client-side collection of converters. We do not collect or store your files or input.',
+    keywords: ['privacy policy','privacy-first','client-side converter','no tracking','no storage','onlineconvertkit'],
+    openGraph: {
+        title: 'Privacy Policy | OnlineConvertKit',
+        description: 'Privacy policy — Converter is a privacy-first, client-side collection of converters. We do not collect or store your files or input.',
+        url: 'https://onlineconvertkit.com/privacy',
+        siteName: 'OnlineConvertKit',
+        type: 'website',
+    },
+    twitter: { card: 'summary' },
 };
 
 export default function PrivacyPage() {
@@ -13,7 +22,7 @@ export default function PrivacyPage() {
                 <div className="pointer-events-none absolute -right-16 -top-16 w-72 h-72 bg-gradient-to-br from-indigo-200 to-pink-200 opacity-30 blur-3xl rounded-full mix-blend-multiply dark:from-indigo-900 dark:to-pink-800 dark:opacity-20" />
 
                 <header className="mb-8 text-center relative z-10">
-                    <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 dark:text-zinc-50">Privacy</h1>
+                    <h1 className="text-4xl sm:text-5xl font-semibold text-zinc-900 dark:text-zinc-50">Privacy Policy</h1>
                     <p className="mt-3 max-w-2xl mx-auto text-zinc-600 dark:text-zinc-400">Converter runs entirely in your browser — no tracking, and no storage of your files or inputs by default.</p>
                 </header>
 
@@ -64,7 +73,30 @@ export default function PrivacyPage() {
                         </div>
                     </div>
 
-                    
+                                {/* JSON-LD structured data for Privacy page */}
+                                <script
+                                    type="application/ld+json"
+                                    dangerouslySetInnerHTML={{
+                                        __html: JSON.stringify({
+                                            '@context': 'https://schema.org',
+                                            '@graph': [
+                                                {
+                                                    '@type': 'WebPage',
+                                                    '@id': 'https://onlineconvertkit.com/privacy#webpage',
+                                                    'url': 'https://onlineconvertkit.com/privacy',
+                                                    'name': 'Privacy Policy',
+                                                    'description': 'Privacy policy — Converter is a privacy-first, client-side collection of converters. We do not collect or store your files or input.',
+                                                },
+                                                {
+                                                    '@type': 'Organization',
+                                                    '@id': 'https://onlineconvertkit.com/#org',
+                                                    'name': 'OnlineConvertKit',
+                                                    'url': 'https://onlineconvertkit.com/',
+                                                },
+                                            ],
+                                        }),
+                                    }}
+                                />
                 </section>
             </div>
         </main>

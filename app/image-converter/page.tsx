@@ -2,12 +2,26 @@ import React from "react";
 import Link from "next/link";
 import { imageConverters } from "../../data/imageConverters";
 
+export const metadata = {
+  title: 'Image Converters | OnlineConvertKit',
+  description: 'Convert and optimize images directly in your browser — no logging required. Fast, private, and lightweight.',
+  keywords: ['image converter','online image converter','convert images','image optimizer','webp converter','png to jpg','jpg to webp','free image converter','onlineconvertkit'],
+  openGraph: {
+    title: 'Image Converters | OnlineConvertKit',
+    description: 'Convert and optimize images directly in your browser — no logging required. Fast, private, and lightweight.',
+    siteName: 'OnlineConvertKit',
+    type: 'website',
+    url: 'https://onlineconvertkit.com/image-converter',
+  },
+  twitter: { card: 'summary_large_image' },
+};
+
 export default function ImageIndexPage() {
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-black py-12 px-6">
       <div className="mx-auto max-w-6xl">
         <header className="mb-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 dark:text-zinc-50">Image Converters</h1>
+          <h1 className="text-4xl sm:text-5xl font-semibold text-zinc-900 dark:text-zinc-50">Image Converters</h1>
           <p className="mt-3 max-w-2xl mx-auto text-sm text-zinc-600 dark:text-zinc-400">Convert and optimize images directly in your browser — no logging required. Fast, private, and lightweight.</p>
         </header>
 
@@ -43,6 +57,37 @@ export default function ImageIndexPage() {
             </Link>
           ))}
         </div>
+        {/* JSON-LD structured data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'WebPage',
+                  '@id': 'https://onlineconvertkit.com/image-converter#webpage',
+                  'url': 'https://onlineconvertkit.com/image-converter',
+                  'name': 'Image Converters',
+                  'description': 'Convert and optimize images directly in your browser — no logging required. Fast, private, and lightweight.',
+                },
+                {
+                  '@type': 'BreadcrumbList',
+                  'itemListElement': [
+                    { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://onlineconvertkit.com/' },
+                    { '@type': 'ListItem', 'position': 2, 'name': 'Image Converters', 'item': 'https://onlineconvertkit.com/image-converter' },
+                  ],
+                },
+                {
+                  '@type': 'CollectionPage',
+                  'name': 'Image Converters',
+                  'url': 'https://onlineconvertkit.com/image-converter',
+                  'description': 'A collection of client-side image conversion and optimization tools for common web formats.',
+                },
+              ],
+            }),
+          }}
+        />
       </div>
     </main>
   );

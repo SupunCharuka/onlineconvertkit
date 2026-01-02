@@ -5,7 +5,7 @@ import type { UnitConverter } from "../data/unitConverters";
 type AnyConverter = ImageConverter | UnitConverter;
 
 export function buildConverterMetadata(converter: AnyConverter, url?: string): Metadata {
-  const title = `${converter.name} — ${converter.from} to ${converter.to}`;
+  const title = `${converter.name} | ${converter.from} to ${converter.to}`;
   // Combine short description and longDescription into a single SEO description
   const combined = [String((converter as AnyConverter).description || ""), String((converter as AnyConverter).longDescription || "")].filter(Boolean).join(' ');
   const description = String(combined).slice(0, 160);
