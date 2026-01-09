@@ -1,12 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
     return (
         <footer className="border-t border-zinc-100 dark:border-zinc-800 bg-gradient-to-t from-white/70 dark:from-black/50 backdrop-blur-sm">
             <div className="max-w-6xl mx-auto px-6 py-6 text-sm text-zinc-600 dark:text-zinc-400 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4 w-full md:w-auto">
-                    <img src="/logo.svg" alt="OnlineConvertKit" className="w-10 h-10 rounded-lg shadow-md flex-shrink-0 object-cover" />
+                    <Image src="/logo.svg" alt="OnlineConvertKit" width={40} height={40} className="w-10 h-10 rounded-lg shadow-md flex-shrink-0 object-cover" />
                     <div className="leading-tight">
                         <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">OnlineConvertKit</div>
                         <div className="text-xs text-zinc-500">© {new Date().getFullYear()}</div>

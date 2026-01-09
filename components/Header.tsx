@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export default function Header() {
     const [open, setOpen] = useState(false);
@@ -37,7 +38,7 @@ export default function Header() {
         <header className="sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800 bg-white/60 dark:bg-black/50 backdrop-blur-lg">
             <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
                 <Link href="/" className="flex items-center gap-3 shrink-0">
-                    <img src="/logo.svg" alt="OnlineConvertKit" className="w-11 h-11 rounded-lg shadow-xl object-cover" />
+                    <Image src="/logo.svg" alt="OnlineConvertKit" width={44} height={44} className="w-11 h-11 rounded-lg shadow-xl object-cover" />
                     <div className="hidden sm:block">
                         <div className="text-lg font-bold tracking-tight leading-none">OnlineConvertKit</div>
                          </div>
