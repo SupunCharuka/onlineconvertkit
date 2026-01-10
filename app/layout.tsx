@@ -96,7 +96,26 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
                   '@id': 'https://onlineconvertkit.com/#org',
                   'name': 'OnlineConvertKit',
                   'url': 'https://onlineconvertkit.com/',
-                  'logo': 'https://onlineconvertkit.com/logo.svg',
+                  'logo': [
+                    {
+                      '@type': 'ImageObject',
+                      'url': 'https://onlineconvertkit.com/logo.svg',
+                      'width': 600,
+                      'height': 600,
+                    },
+                    {
+                      '@type': 'ImageObject',
+                      'url': 'https://onlineconvertkit.com/og-600x600.png',
+                      'width': 600,
+                      'height': 600,
+                    },
+                    {
+                      '@type': 'ImageObject',
+                      'url': 'https://onlineconvertkit.com/icon-512.png',
+                      'width': 512,
+                      'height': 512,
+                    },
+                  ],
                 },
               ],
             }),
