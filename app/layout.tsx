@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     "onlineconvertkit",
   ],
   icons: {
-    icon: '/logo.svg',
-    apple: '/logo.svg',
+    icon: '/favicon.png',
+    apple: '/favicon.png',
   },
   openGraph: {
     title: "Free Online File, Image & Unit Converter | OnlineConvertKit",
