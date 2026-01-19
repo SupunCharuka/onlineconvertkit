@@ -121,6 +121,12 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
             }),
           }}
         />
+        {/* Google AdSense - placed here so it loads on every page */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7166547678775004"
+          crossOrigin="anonymous"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-zinc-900 dark:text-zinc-50 bg-white dark:bg-black`}
